@@ -1074,5 +1074,650 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
   setup();
 })();
 </script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     UNIFIED SIMULATION — HTML block
+══════════════════════════════════════════════════════════════ -->
+<style>
+.unified-header{
+  padding:32px 32px 20px;
+  border-top:3px solid var(--hi);
+  background:var(--surf);
+}
+.unified-header h2{
+  font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--hi);
+  letter-spacing:.05em;margin-bottom:6px;
+}
+.unified-header p{font-size:12px;color:var(--muted);line-height:1.8;max-width:900px;}
+.unified-header p strong{color:var(--text);}
+
+.unified-block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:680px;
+  border-bottom:2px solid var(--border);
+}
+.u-vis{
+  background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;gap:14px;
+  border-right:1px solid var(--border);
+}
+.u-vis canvas{display:block;image-rendering:pixelated;border:1px solid var(--border);border-radius:3px;}
+
+.u-info{padding:24px 28px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+
+.u-section-label{
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:4px;
+}
+
+/* mechanism toggles */
+.mech-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mech-toggle{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:5px;
+  border:1px solid var(--border);background:var(--dim);
+  cursor:pointer;transition:border-color .15s;
+}
+.mech-toggle.active{border-color:var(--hi);}
+.mech-toggle input[type=checkbox]{accent-color:var(--hi);cursor:pointer;width:14px;height:14px;}
+.mech-toggle-label{font-family:var(--font-mono);font-size:10px;color:var(--text);}
+.mech-toggle-sub{font-size:9px;color:var(--muted);}
+
+/* color mode selector */
+.view-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+.view-tab{
+  font-family:var(--font-mono);font-size:9px;font-weight:600;
+  padding:4px 10px;border-radius:4px;cursor:pointer;
+  border:1px solid var(--border);background:var(--dim);color:var(--muted);
+  transition:all .15s;
+}
+.view-tab.active{background:var(--hi);color:#000;border-color:var(--hi);}
+
+/* u stats */
+.u-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.u-stat{background:var(--dim);border:1px solid var(--border);border-radius:4px;padding:7px 8px;}
+.u-stat-val{font-family:var(--font-mono);font-size:14px;font-weight:700;line-height:1;}
+.u-stat-lbl{font-size:9px;color:var(--muted);margin-top:2px;}
+
+/* cond grid */
+.cond-grid{display:flex;flex-direction:column;gap:5px;}
+.u-cond{display:flex;align-items:center;gap:7px;padding:5px 9px;background:var(--dim);border:1px solid var(--border);border-radius:4px;}
+.u-cond-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.u-cond-dot.met{background:var(--green);box-shadow:0 0 5px var(--green);}
+.u-cond-dot.unmet{background:var(--D);}
+.u-cond-dot.off{background:var(--muted);}
+.u-cond-text{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.u-cond-text span{color:var(--text);}
+
+.legend-row{display:flex;gap:10px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.leg-dot{width:9px;height:9px;border-radius:2px;}
+</style>
+
+<div class="unified-header" id="r-unified">
+  <h2>⬡ UNIFIED SIMULATION — All Five Rules Active</h2>
+  <p>
+    Every agent simultaneously embodies all five mechanisms.
+    <strong>Kin selection</strong>: agents belong to relatedness clusters — fitness contributions from kin are upweighted by r.
+    <strong>Direct reciprocity</strong>: each agent carries a strategy (AllC / AllD / TFT / GTFT) and plays iterated games with neighbors, with continuation probability w.
+    <strong>Indirect reciprocity</strong>: each agent has a public reputation that rises when it cooperates and falls when it defects; agents with low reputation are less likely to receive help.
+    <strong>Network reciprocity</strong>: agents are fixed on a spatial lattice and only interact with local neighbors — cooperation clusters can form and resist invasion.
+    <strong>Group selection</strong>: the grid is partitioned into groups; high-cooperation groups periodically expand and replace low-cooperation groups.
+    Toggle each mechanism on/off and tune its strength to observe how they interact.
+  </p>
+</div>
+
+<div class="unified-block">
+  <!-- VIS -->
+  <div class="u-vis">
+    <canvas id="ucv" width="100" height="100" style="width:380px;height:380px"></canvas>
+    <canvas id="uch" width="380" height="130" style="width:380px;height:130px;background:var(--surf);border:1px solid var(--border);border-radius:4px;"></canvas>
+    <!-- view mode -->
+    <div style="display:flex;flex-direction:column;gap:6px;width:380px;">
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;">Color view</div>
+      <div class="view-tabs" id="u-view-tabs">
+        <div class="view-tab active" data-view="strategy">Strategy</div>
+        <div class="view-tab" data-view="reputation">Reputation</div>
+        <div class="view-tab" data-view="group">Group</div>
+        <div class="view-tab" data-view="fitness">Fitness</div>
+      </div>
+      <div class="legend-row" id="u-legend"></div>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="u-info">
+
+    <!-- Mechanism toggles -->
+    <div>
+      <div class="u-section-label">Active Mechanisms</div>
+      <div class="mech-grid">
+        <label class="mech-toggle active" id="mt-kin">
+          <input type="checkbox" id="u-kin" checked/>
+          <div><div class="mech-toggle-label">1. Kin Selection</div><div class="mech-toggle-sub">rb &gt; c</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-dr">
+          <input type="checkbox" id="u-dr" checked/>
+          <div><div class="mech-toggle-label">2. Direct Reciprocity</div><div class="mech-toggle-sub">w &gt; c/b</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-ir">
+          <input type="checkbox" id="u-ir" checked/>
+          <div><div class="mech-toggle-label">3. Indirect Reciprocity</div><div class="mech-toggle-sub">q &gt; c/b</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-nr">
+          <input type="checkbox" id="u-nr" checked/>
+          <div><div class="mech-toggle-label">4. Network Reciprocity</div><div class="mech-toggle-sub">b/c &gt; k</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-gs">
+          <input type="checkbox" id="u-gs" checked/>
+          <div><div class="mech-toggle-label">5. Group Selection</div><div class="mech-toggle-sub">b/c &gt; 1+n/m</div></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Shared params -->
+    <div>
+      <div class="u-section-label">Shared Parameters</div>
+      <div class="sliders">
+        <div class="sl-row"><span class="sl-label">Benefit (b)</span><input type="range" id="u-b" min="1" max="15" step="0.5" value="5"/><span class="sl-val" id="uv-b">5.0</span></div>
+        <div class="sl-row"><span class="sl-label">Cost (c)</span><input type="range" id="u-c" min="0.1" max="5" step="0.1" value="1"/><span class="sl-val" id="uv-c">1.0</span></div>
+        <div class="sl-row"><span class="sl-label">Init. coop. rate</span><input type="range" id="u-init" min="0.05" max="0.95" step="0.05" value="0.5"/><span class="sl-val" id="uv-init">50%</span></div>
+        <div class="sl-row"><span class="sl-label">Mutation rate</span><input type="range" id="u-mut" min="0" max="0.1" step="0.005" value="0.01"/><span class="sl-val" id="uv-mut">0.010</span></div>
+        <div class="sl-row"><span class="sl-label">Speed</span><input type="range" id="u-speed" min="1" max="20" step="1" value="8"/><span class="sl-val" id="uv-speed">8</span></div>
+      </div>
+    </div>
+
+    <!-- Mechanism-specific params -->
+    <div>
+      <div class="u-section-label">Mechanism Strengths</div>
+      <div class="sliders">
+        <div class="sl-row"><span class="sl-label">Relatedness (r)</span><input type="range" id="u-r" min="0" max="1" step="0.05" value="0.3"/><span class="sl-val" id="uv-r">0.30</span></div>
+        <div class="sl-row"><span class="sl-label">Continuation (w)</span><input type="range" id="u-w" min="0.01" max="0.99" step="0.01" value="0.5"/><span class="sl-val" id="uv-w">0.50</span></div>
+        <div class="sl-row"><span class="sl-label">Rep. knowledge (q)</span><input type="range" id="u-q" min="0.01" max="1" step="0.01" value="0.4"/><span class="sl-val" id="uv-q">0.40</span></div>
+        <div class="sl-row"><span class="sl-label">Groups (m)</span><input type="range" id="u-m" min="4" max="25" step="1" value="10"/><span class="sl-val" id="uv-m">10</span></div>
+      </div>
+    </div>
+
+    <!-- Conditions -->
+    <div>
+      <div class="u-section-label">Condition Status</div>
+      <div class="cond-grid">
+        <div class="u-cond"><div class="u-cond-dot" id="ud1"></div><span class="u-cond-text"><span>Kin:</span> r·b vs c &nbsp;<span id="ut1"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud2"></div><span class="u-cond-text"><span>Direct:</span> w vs c/b &nbsp;<span id="ut2"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud3"></div><span class="u-cond-text"><span>Indirect:</span> q vs c/b &nbsp;<span id="ut3"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud4"></div><span class="u-cond-text"><span>Network:</span> b/c vs k=8 &nbsp;<span id="ut4"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud5"></div><span class="u-cond-text"><span>Group:</span> b/c vs 1+n/m &nbsp;<span id="ut5"></span></span></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div>
+      <div class="u-section-label">Population</div>
+      <div class="u-stats-grid">
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--C)" id="us-allc">–</div><div class="u-stat-lbl">AllC</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#80ee80" id="us-tft">–</div><div class="u-stat-lbl">TFT/GTFT</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--D)" id="us-alld">–</div><div class="u-stat-lbl">AllD</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--hi)" id="us-gen">0</div><div class="u-stat-lbl">Generation</div></div>
+      </div>
+      <div style="margin-top:8px;" class="u-stats-grid">
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--green)" id="us-rep">–</div><div class="u-stat-lbl">Avg Reputation</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-coop">–</div><div class="u-stat-lbl">Coop. Rate</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-fit">–</div><div class="u-stat-lbl">Avg Fitness</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-grp">–</div><div class="u-stat-lbl">Avg Grp Coop</div></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-run" id="ubtn-run">▶ Run</button>
+      <button class="btn-step" id="ubtn-step">Step</button>
+      <button class="btn-reset" id="ubtn-reset">↺ Reset</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// UNIFIED SIMULATION
+// ══════════════════════════════════════════════════════════════
+(function(){
+  const N = 100, N2 = N*N;
+  const K = 8; // Moore neighborhood
+
+  // Strategy constants
+  const ALLC=0, TFT=1, GTFT=2, ALLD=3;
+  const STRAT_COLORS = {
+    0: [74,158,255],    // AllC — blue
+    1: [80,220,130],    // TFT  — green
+    2: [180,140,255],   // GTFT — purple
+    3: [224,68,68],     // AllD — red
+  };
+
+  // Per-agent arrays
+  let strategy  = new Uint8Array(N2);   // 0–3
+  let rep       = new Float32Array(N2); // 0–1 reputation
+  let kinGroup  = new Uint8Array(N2);   // kin cluster id (0–24)
+  let simGroup  = new Uint8Array(N2);   // group selection group id
+  let fitness   = new Float32Array(N2);
+  let lastMoveToNeighbor = new Uint8Array(N2); // simplified: last cooperation decision
+  let gen = 0;
+
+  let viewMode = 'strategy';
+
+  // Precomputed neighbor indices
+  let nbCache = [];
+  function buildNbCache(){
+    nbCache=[];
+    for(let r=0;r<N;r++) for(let c=0;c<N;c++){
+      const nb=[];
+      for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+        if(!dr&&!dc) continue;
+        nb.push(((r+dr+N)%N)*N+((c+dc+N)%N));
+      }
+      nbCache.push(nb);
+    }
+  }
+
+  // Group partition: divide grid into m roughly equal rectangular groups
+  function buildGroups(m){
+    const cols=Math.ceil(Math.sqrt(m));
+    const rows=Math.ceil(m/cols);
+    const cw=Math.ceil(N/cols), ch=Math.ceil(N/rows);
+    for(let i=0;i<N2;i++){
+      const r=Math.floor(i/N), c=i%N;
+      const gr=Math.floor(r/ch), gc=Math.floor(c/cw);
+      simGroup[i]=Math.min(gr*cols+gc, m-1);
+    }
+  }
+
+  // Kin clusters: assign patches to one of 25 kin clusters (5x5 grid of clusters)
+  function buildKinClusters(){
+    const KW=Math.ceil(N/5);
+    for(let i=0;i<N2;i++){
+      const r=Math.floor(i/N), c=i%N;
+      kinGroup[i]=Math.floor(r/KW)*5+Math.floor(c/KW);
+    }
+  }
+
+  function params(){
+    return {
+      b: parseFloat(document.getElementById('u-b').value),
+      c: parseFloat(document.getElementById('u-c').value),
+      r: parseFloat(document.getElementById('u-r').value),
+      w: parseFloat(document.getElementById('u-w').value),
+      q: parseFloat(document.getElementById('u-q').value),
+      m: parseInt(document.getElementById('u-m').value),
+      mut: parseFloat(document.getElementById('u-mut').value),
+      init: parseFloat(document.getElementById('u-init').value),
+      useKin: document.getElementById('u-kin').checked,
+      useDR:  document.getElementById('u-dr').checked,
+      useIR:  document.getElementById('u-ir').checked,
+      useNR:  document.getElementById('u-nr').checked,
+      useGS:  document.getElementById('u-gs').checked,
+    };
+  }
+
+  function setup(){
+    gen=0;
+    buildNbCache();
+    const p=params();
+    buildGroups(p.m);
+    buildKinClusters();
+    for(let i=0;i<N2;i++){
+      // random initial strategy
+      const r2=rand();
+      if(r2<p.init*0.5)      strategy[i]=ALLC;
+      else if(r2<p.init)     strategy[i]=rand()<0.5?TFT:GTFT;
+      else                   strategy[i]=ALLD;
+      rep[i]=rand();
+      lastMoveToNeighbor[i]=1;
+    }
+    uChart.clear(); render(); updateUI();
+  }
+
+  // decide if agent i cooperates with agent j (given parameters)
+  function decideCooperate(i, j, p){
+    const s=strategy[i];
+    if(s===ALLC) return 1;
+    if(s===ALLD) return 0;
+    if(s===TFT)  return lastMoveToNeighbor[j]; // mirror j's last move
+    if(s===GTFT) {
+      if(lastMoveToNeighbor[j]) return 1;
+      // forgive with probability min(1-c/b, q)
+      return rand() < Math.max(0, 1 - p.c/p.b) ? 1 : 0;
+    }
+    return 1;
+  }
+
+  function tick(){
+    const p=params();
+    const newStrat=strategy.slice();
+    const newRep=rep.slice();
+    const newLast=lastMoveToNeighbor.slice();
+
+    // ── STEP 1: compute payoffs ───────────────────────────────
+    fitness.fill(0);
+    for(let i=0;i<N2;i++){
+      const nb=nbCache[i];
+      for(const j of nb){
+        // how many rounds? w determines expected length
+        const rounds = p.useDR ? Math.max(1, Math.round(1/(1-Math.min(p.w,0.99)))) : 1;
+        let myPay=0;
+        let lastJ=lastMoveToNeighbor[j], lastI=lastMoveToNeighbor[i];
+        for(let rnd=0;rnd<Math.min(rounds,8);rnd++){
+          const miCoop = p.useDR ? decideCooperate(i,j,p) : (strategy[i]!==ALLD?1:0);
+          const mjCoop = p.useDR ? decideCooperate(j,i,p) : (strategy[j]!==ALLD?1:0);
+
+          // indirect reciprocity: reputation gates cooperation
+          let iActualCoop = miCoop;
+          let jActualCoop = mjCoop;
+          if(p.useIR){
+            if(rand()<p.q && rep[j]<0.3) iActualCoop=0;
+            if(rand()<p.q && rep[i]<0.3) jActualCoop=0;
+          }
+
+          if(iActualCoop){ myPay -= p.c; }
+          if(jActualCoop){ myPay += p.b; }
+
+          // reputation update
+          if(p.useIR){
+            if(iActualCoop) newRep[i]=Math.min(1, rep[i]+0.08);
+            else            newRep[i]=Math.max(0, rep[i]-0.04);
+          }
+
+          newLast[i]=iActualCoop;
+          lastJ=mjCoop; lastI=iActualCoop;
+          if(rnd<rounds-1 && rand()>p.w) break;
+        }
+
+        // kin selection: weight payoff by relatedness if same kin group
+        let kinBonus=1;
+        if(p.useKin && kinGroup[i]===kinGroup[j]) kinBonus = 1 + p.r;
+        fitness[i] += myPay * kinBonus;
+      }
+    }
+
+    // ── STEP 2: strategy update (network reciprocity = spatial imitation) ──
+    for(let i=0;i<N2;i++){
+      const nb=nbCache[i];
+      let bestFit=fitness[i], bestStrat=strategy[i];
+
+      if(p.useNR){
+        // imitate best neighbor (spatial)
+        for(const j of nb){
+          let effectiveFit=fitness[j];
+          // kin bonus for adoption
+          if(p.useKin && kinGroup[i]===kinGroup[j]) effectiveFit*=(1+p.r*0.5);
+          if(effectiveFit>bestFit){bestFit=effectiveFit;bestStrat=strategy[j];}
+        }
+      } else {
+        // well-mixed: random comparison within neighborhood
+        const j=nb[randInt(nb.length)];
+        if(fitness[j]>fitness[i]) bestStrat=strategy[j];
+      }
+      newStrat[i]=bestStrat;
+      if(rand()<p.mut) newStrat[i]=randInt(4);
+    }
+
+    // ── STEP 3: group selection ───────────────────────────────
+    if(p.useGS){
+      buildGroups(p.m);
+      // compute group cooperation rates
+      const groupCoop = new Float32Array(p.m);
+      const groupSize = new Float32Array(p.m);
+      for(let i=0;i<N2;i++){
+        const g=simGroup[i];
+        groupCoop[g]+=(newStrat[i]!==ALLD?1:0);
+        groupSize[g]++;
+      }
+      // find best and worst group
+      let bestG=0, worstG=0;
+      let bestRate=-1, worstRate=2;
+      for(let g=0;g<p.m;g++){
+        const rate=groupSize[g]>0?groupCoop[g]/groupSize[g]:0;
+        if(rate>bestRate){bestRate=rate;bestG=g;}
+        if(rate<worstRate){worstRate=rate;worstG=g;}
+      }
+      // with small probability, best group "invades" one border cell of worst group
+      if(rand()<0.05 && bestG!==worstG){
+        // find a cell in worst group and replace its strategy with a random cell from best group
+        const worstCells=[]; const bestCells=[];
+        for(let i=0;i<N2;i++){
+          if(simGroup[i]===worstG) worstCells.push(i);
+          if(simGroup[i]===bestG)  bestCells.push(i);
+        }
+        if(worstCells.length && bestCells.length){
+          const target=worstCells[randInt(worstCells.length)];
+          const donor =bestCells[randInt(bestCells.length)];
+          newStrat[target]=newStrat[donor];
+        }
+      }
+    }
+
+    strategy=newStrat; rep=newRep; lastMoveToNeighbor=newLast;
+    gen++;
+    render(); updateUI();
+
+    // chart
+    const allc=strategy.filter(s=>s===ALLC).length/N2;
+    const tft=strategy.filter(s=>s===TFT||s===GTFT).length/N2;
+    const alld=strategy.filter(s=>s===ALLD).length/N2;
+    uChart.push([allc+tft, alld, allc]);
+  }
+
+  // ── RENDER ─────────────────────────────────────────────────
+  function render(){
+    const cv=document.getElementById('ucv');
+    const cx=cv.getContext('2d');
+    const img=cx.createImageData(N,N); const px=img.data;
+
+    // precompute group coop rates for group view
+    let groupCoopRate=null;
+    if(viewMode==='group'){
+      const m=params().m;
+      const gc=new Float32Array(m), gs=new Float32Array(m);
+      for(let i=0;i<N2;i++){const g=simGroup[i];gc[g]+=(strategy[i]!==ALLD?1:0);gs[g]++;}
+      groupCoopRate=new Float32Array(m);
+      for(let g=0;g<m;g++) groupCoopRate[g]=gs[g]>0?gc[g]/gs[g]:0;
+    }
+
+    // precompute fitness range for fitness view
+    let fitMin=Infinity,fitMax=-Infinity;
+    if(viewMode==='fitness'){
+      for(let i=0;i<N2;i++){if(fitness[i]<fitMin)fitMin=fitness[i];if(fitness[i]>fitMax)fitMax=fitness[i];}
+    }
+
+    for(let i=0;i<N2;i++){
+      let col;
+      switch(viewMode){
+        case 'strategy':
+          col=STRAT_COLORS[strategy[i]]; break;
+        case 'reputation': {
+          const v=rep[i];
+          col=[Math.round(v*74+(1-v)*224), Math.round(v*158+(1-v)*68), Math.round(v*255+(1-v)*68)];
+          break;
+        }
+        case 'group': {
+          const g=simGroup[i];
+          const cr=groupCoopRate[g];
+          // hue cycles through groups, saturation by coop rate
+          const hue=(g*37)%360;
+          const h=hue/360,s=0.5+cr*0.5,l=0.25+cr*0.25;
+          col=hslToRgb(h,s,l); break;
+        }
+        case 'fitness': {
+          const range=fitMax-fitMin||1;
+          const v=(fitness[i]-fitMin)/range;
+          col=[Math.round(v*255), Math.round(v*200), Math.round((1-v)*180)];
+          break;
+        }
+      }
+      const p2=i*4; px[p2]=col[0];px[p2+1]=col[1];px[p2+2]=col[2];px[p2+3]=255;
+    }
+    cx.putImageData(img,0,0);
+  }
+
+  function hslToRgb(h,s,l){
+    let r,g,b;
+    if(!s){r=g=b=l;}
+    else{
+      const hue2rgb=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
+      const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;
+      r=hue2rgb(p,q,h+1/3);g=hue2rgb(p,q,h);b=hue2rgb(p,q,h-1/3);
+    }
+    return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+  }
+
+  // ── UPDATE UI ──────────────────────────────────────────────
+  function updateUI(){
+    const p=params();
+    const allc=strategy.filter(s=>s===ALLC).length;
+    const tftN=strategy.filter(s=>s===TFT||s===GTFT).length;
+    const alld=strategy.filter(s=>s===ALLD).length;
+    const coopRate=(allc+tftN)/N2;
+    const avgRep=rep.reduce((a,v)=>a+v,0)/N2;
+    const avgFit=fitness.reduce((a,v)=>a+v,0)/N2;
+
+    document.getElementById('us-allc').textContent=(allc/N2*100).toFixed(1)+'%';
+    document.getElementById('us-tft').textContent=(tftN/N2*100).toFixed(1)+'%';
+    document.getElementById('us-alld').textContent=(alld/N2*100).toFixed(1)+'%';
+    document.getElementById('us-gen').textContent=gen;
+    document.getElementById('us-rep').textContent=avgRep.toFixed(2);
+    document.getElementById('us-coop').textContent=(coopRate*100).toFixed(1)+'%';
+    document.getElementById('us-fit').textContent=avgFit.toFixed(1);
+
+    // group avg coop
+    const gc=new Float32Array(p.m), gs=new Float32Array(p.m);
+    for(let i=0;i<N2;i++){const g=simGroup[i];gc[g]+=(strategy[i]!==ALLD?1:0);gs[g]++;}
+    let gcAvg=0; for(let g=0;g<p.m;g++) gcAvg+=gs[g]>0?gc[g]/gs[g]:0;
+    document.getElementById('us-grp').textContent=(gcAvg/p.m*100).toFixed(1)+'%';
+
+    // condition indicators
+    const conds=[
+      {id:'ud1',tid:'ut1', on:p.useKin, lhs:p.r*p.b, rhs:p.c,   lhsL:'r·b', rhsL:'c'},
+      {id:'ud2',tid:'ut2', on:p.useDR,  lhs:p.w,     rhs:p.c/p.b, lhsL:'w',  rhsL:'c/b'},
+      {id:'ud3',tid:'ut3', on:p.useIR,  lhs:p.q,     rhs:p.c/p.b, lhsL:'q',  rhsL:'c/b'},
+      {id:'ud4',tid:'ut4', on:p.useNR,  lhs:p.b/p.c, rhs:K,       lhsL:'b/c',rhsL:'k'},
+      {id:'ud5',tid:'ut5', on:p.useGS,  lhs:p.b/p.c, rhs:1+10/p.m,lhsL:'b/c',rhsL:'1+n/m'},
+    ];
+    conds.forEach(({id,tid,on,lhs,rhs,lhsL,rhsL})=>{
+      const dot=document.getElementById(id);
+      const txt=document.getElementById(tid);
+      if(!on){ dot.className='u-cond-dot off'; txt.textContent='(off)'; return; }
+      const met=lhs>rhs;
+      dot.className='u-cond-dot '+(met?'met':'unmet');
+      txt.textContent=`${lhsL}=${lhs.toFixed(2)} ${met?'>':'≤'} ${rhsL}=${rhs.toFixed(2)} ${met?'✓':'✗'}`;
+    });
+  }
+
+  // ── CHART ──────────────────────────────────────────────────
+  const uChart = makeChart('uch',[
+    {label:'Coop (AllC+TFT)',color:'#4a9eff'},
+    {label:'AllD',color:'#e04444'},
+    {label:'AllC only',color:'#80ee80'},
+  ]);
+
+  // ── LEGEND ─────────────────────────────────────────────────
+  function updateLegend(){
+    const leg=document.getElementById('u-legend');
+    leg.innerHTML='';
+    const views={
+      strategy:[
+        {color:'#4a9eff',label:'AllC'},
+        {color:'#80ee80',label:'TFT'},
+        {color:'#b48cff',label:'GTFT'},
+        {color:'#e04444',label:'AllD'},
+      ],
+      reputation:[
+        {color:'#4a9eff',label:'High rep (coop)'},
+        {color:'#e04444',label:'Low rep (defect)'},
+      ],
+      group:[{color:'#aaa',label:'Each color = one group; brightness = coop rate'}],
+      fitness:[
+        {color:'#ffcc00',label:'High fitness'},
+        {color:'#2d0000',label:'Low fitness'},
+      ],
+    };
+    (views[viewMode]||[]).forEach(({color,label})=>{
+      const d=document.createElement('div');
+      d.className='leg';
+      d.innerHTML=`<div class="leg-dot" style="background:${color}"></div>${label}`;
+      leg.appendChild(d);
+    });
+  }
+
+  // ── SLIDER WIRING ──────────────────────────────────────────
+  const slMap={
+    'u-b':'uv-b','u-c':'uv-c','u-r':'uv-r','u-w':'uv-w',
+    'u-q':'uv-q','u-m':'uv-m','u-speed':'uv-speed',
+    'u-mut':'uv-mut','u-init':'uv-init',
+  };
+  Object.entries(slMap).forEach(([sid,vid])=>{
+    const el=document.getElementById(sid);
+    el.addEventListener('input',()=>{
+      let v=parseFloat(el.value);
+      let txt;
+      if(sid==='u-init') txt=Math.round(v*100)+'%';
+      else if(sid==='u-mut') txt=v.toFixed(3);
+      else if(Number.isInteger(v)) txt=String(v);
+      else txt=v.toFixed(2);
+      document.getElementById(vid).textContent=txt;
+      updateUI();
+    });
+  });
+
+  // mechanism checkboxes
+  ['u-kin','u-dr','u-ir','u-nr','u-gs'].forEach((id,i)=>{
+    const mtId=['mt-kin','mt-dr','mt-ir','mt-nr','mt-gs'][i];
+    document.getElementById(id).addEventListener('change',e=>{
+      document.getElementById(mtId).classList.toggle('active',e.target.checked);
+      updateUI();
+    });
+  });
+
+  // view tabs
+  document.querySelectorAll('.view-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      viewMode=tab.dataset.view;
+      updateLegend();
+      render();
+    });
+  });
+
+  // run loop with speed control
+  let running=false, rafId=null, lastT=null, accT=0;
+  function loop(ts){
+    if(!running)return;
+    if(!lastT)lastT=ts;
+    accT+=ts-lastT; lastT=ts;
+    const speed=parseInt(document.getElementById('u-speed').value);
+    const msPerTick=Math.max(16,200/speed);
+    while(accT>=msPerTick){tick();accT-=msPerTick;}
+    rafId=requestAnimationFrame(loop);
+  }
+  function stopU(){
+    running=false;if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+    lastT=null;accT=0;
+    document.getElementById('ubtn-run').textContent='▶ Run';
+  }
+  function startU(){
+    running=true;
+    document.getElementById('ubtn-run').textContent='⏸ Pause';
+    rafId=requestAnimationFrame(loop);
+  }
+
+  document.getElementById('ubtn-run').addEventListener('click',()=>{running?stopU():startU();});
+  document.getElementById('ubtn-step').addEventListener('click',()=>tick());
+  document.getElementById('ubtn-reset').addEventListener('click',()=>{stopU();setup();});
+
+  updateLegend();
+  requestAnimationFrame(()=>setup());
+})();
+</script>
 </body>
 </html>
