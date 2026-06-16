@@ -14,9 +14,9 @@
   --text:    #dde1f0;
   --muted:   #5a607a;
   --dim:     #1e2130;
-  --C:  #4a9eff;   /* cooperator blue */
-  --D:  #e04444;   /* defector red */
-  --hi: #f0c040;   /* highlight yellow */
+  --C:  #4a9eff;
+  --D:  #e04444;
+  --hi: #f0c040;
   --green: #40c870;
   --font-mono: 'JetBrains Mono', monospace;
   --font-body: 'Inter', sans-serif;
@@ -25,7 +25,6 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:13px;line-height:1.6;}
 
-/* ── HEADER ── */
 .site-header{
   padding:20px 32px 18px;border-bottom:1px solid var(--border);
   display:flex;flex-direction:column;gap:4px;
@@ -34,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 }
 .site-header h1{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--text);}
 .site-header .byline{font-size:11px;color:var(--muted);font-family:var(--font-mono);}
-.rule-nav{display:flex;gap:0;margin-top:10px;border:1px solid var(--border);border-radius:6px;overflow:hidden;width:fit-content;}
+.rule-nav{display:flex;gap:0;margin-top:10px;border:1px solid var(--border);border-radius:6px;overflow:hidden;width:fit-content;flex-wrap:wrap;}
 .rule-nav a{
   font-family:var(--font-mono);font-size:10px;font-weight:600;
   padding:6px 14px;color:var(--muted);text-decoration:none;
@@ -44,7 +43,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .rule-nav a:last-child{border-right:none;}
 .rule-nav a:hover{color:var(--text);background:var(--dim);}
 
-/* ── RULE BLOCK ── */
 .rule-block{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -55,7 +53,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .rule-block:nth-child(even){direction:rtl;}
 .rule-block:nth-child(even)>*{direction:ltr;}
 
-/* vis panel */
 .rule-vis{
   background:#000;
   display:flex;flex-direction:column;
@@ -66,7 +63,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .rule-vis canvas{display:block;image-rendering:pixelated;border:1px solid var(--border);border-radius:3px;}
 canvas.chart-canvas{display:block;background:var(--surf);border:1px solid var(--border);border-radius:4px;}
 
-/* info panel */
 .rule-info{
   padding:28px 32px;
   display:flex;flex-direction:column;gap:16px;
@@ -87,15 +83,14 @@ canvas.chart-canvas{display:block;background:var(--surf);border:1px solid var(--
 .rule-desc{font-size:12px;color:var(--muted);line-height:1.85;border-left:2px solid var(--border);padding-left:12px;}
 .rule-desc strong{color:var(--text);font-weight:500;}
 .rule-desc em{color:var(--C);}
+.rule-desc code{font-family:var(--font-mono);font-size:11px;color:var(--hi);background:var(--dim);padding:1px 5px;border-radius:3px;}
 
-/* sliders */
 .sliders{display:flex;flex-direction:column;gap:10px;}
 .sl-row{display:flex;align-items:center;gap:10px;}
-.sl-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);width:130px;flex-shrink:0;}
+.sl-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);width:140px;flex-shrink:0;}
 .sl-row input[type=range]{flex:1;accent-color:var(--C);cursor:pointer;}
-.sl-val{font-family:var(--font-mono);font-size:11px;color:var(--text);width:40px;text-align:right;flex-shrink:0;}
+.sl-val{font-family:var(--font-mono);font-size:11px;color:var(--text);width:44px;text-align:right;flex-shrink:0;}
 
-/* condition indicator */
 .cond-bar{
   display:flex;align-items:center;gap:10px;
   padding:8px 12px;border-radius:5px;
@@ -106,7 +101,6 @@ canvas.chart-canvas{display:block;background:var(--surf);border:1px solid var(--
 .cond-light.unmet{background:var(--D);box-shadow:0 0 6px var(--D);}
 .cond-text{font-family:var(--font-mono);font-size:11px;color:var(--text);}
 
-/* stats */
 .stats-row{display:flex;gap:10px;}
 .stat-card{
   flex:1;background:var(--dim);border:1px solid var(--border);
@@ -116,7 +110,6 @@ canvas.chart-canvas{display:block;background:var(--surf);border:1px solid var(--
 .stat-val.red{color:var(--D);}
 .stat-lbl{font-size:10px;color:var(--muted);margin-top:2px;}
 
-/* buttons */
 .btn-row{display:flex;gap:6px;}
 button{
   font-family:var(--font-body);font-size:11px;font-weight:500;
@@ -129,22 +122,102 @@ button:disabled{opacity:.3;cursor:not-allowed;}
 .btn-step{background:var(--surf2);color:var(--text);border:1px solid var(--border);}
 .btn-reset{background:var(--surf2);color:var(--muted);border:1px solid var(--border);}
 
-/* tick */
 .tick-line{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
 .tick-line span{color:var(--hi);}
+
+.unified-header{
+  padding:32px 32px 20px;
+  border-top:3px solid var(--hi);
+  background:var(--surf);
+}
+.unified-header h2{
+  font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--hi);
+  letter-spacing:.05em;margin-bottom:6px;
+}
+.unified-header p{font-size:12px;color:var(--muted);line-height:1.8;max-width:920px;}
+.unified-header p strong{color:var(--text);}
+.unified-header p code{font-family:var(--font-mono);font-size:11px;color:var(--hi);background:var(--dim);padding:1px 5px;border-radius:3px;}
+.formula-box{
+  margin-top:14px;font-family:var(--font-mono);font-size:11px;color:var(--text);
+  background:var(--dim);border:1px solid var(--border);border-radius:6px;padding:12px 16px;
+  max-width:920px;line-height:1.9;
+}
+.formula-box .fk{color:var(--hi);}
+
+.unified-block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:760px;
+  border-bottom:2px solid var(--border);
+}
+.u-vis{
+  background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;gap:14px;
+  border-right:1px solid var(--border);
+}
+.u-vis canvas{display:block;image-rendering:pixelated;border:1px solid var(--border);border-radius:3px;}
+
+.u-info{padding:24px 28px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
+
+.u-section-label{
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:4px;
+}
+
+.mech-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mech-toggle{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:5px;
+  border:1px solid var(--border);background:var(--dim);
+  cursor:pointer;transition:border-color .15s;
+}
+.mech-toggle.active{border-color:var(--hi);}
+.mech-toggle input[type=checkbox]{accent-color:var(--hi);cursor:pointer;width:14px;height:14px;}
+.mech-toggle-label{font-family:var(--font-mono);font-size:10px;color:var(--text);}
+.mech-toggle-sub{font-size:9px;color:var(--muted);}
+
+.view-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+.view-tab{
+  font-family:var(--font-mono);font-size:9px;font-weight:600;
+  padding:4px 10px;border-radius:4px;cursor:pointer;
+  border:1px solid var(--border);background:var(--dim);color:var(--muted);
+  transition:all .15s;
+}
+.view-tab.active{background:var(--hi);color:#000;border-color:var(--hi);}
+
+.u-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.u-stat{background:var(--dim);border:1px solid var(--border);border-radius:4px;padding:7px 8px;}
+.u-stat-val{font-family:var(--font-mono);font-size:14px;font-weight:700;line-height:1;}
+.u-stat-lbl{font-size:9px;color:var(--muted);margin-top:2px;}
+
+.cond-grid{display:flex;flex-direction:column;gap:5px;}
+.u-cond{display:flex;align-items:center;gap:7px;padding:5px 9px;background:var(--dim);border:1px solid var(--border);border-radius:4px;}
+.u-cond-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.u-cond-dot.met{background:var(--green);box-shadow:0 0 5px var(--green);}
+.u-cond-dot.unmet{background:var(--D);}
+.u-cond-dot.off{background:var(--muted);}
+.u-cond-text{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.u-cond-text span{color:var(--text);}
+
+.legend-row{display:flex;gap:10px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.leg-dot{width:9px;height:9px;border-radius:2px;}
 </style>
 </head>
 <body>
 
 <div class="site-header">
   <h1>FIVE RULES FOR THE EVOLUTION OF COOPERATION</h1>
-  <div class="byline">// Nowak, M.A. (2006) Science 314:1560–1563 · interactive simulation</div>
+  <div class="byline">// Nowak, M.A. (2006) Science 314:1560–1563 + SOM · interactive simulation, rebuilt to mirror the exact payoff matrices and equations of the paper</div>
   <nav class="rule-nav">
     <a href="#r1">1. Kin Selection</a>
     <a href="#r2">2. Direct Reciprocity</a>
     <a href="#r3">3. Indirect Reciprocity</a>
     <a href="#r4">4. Network Reciprocity</a>
     <a href="#r5">5. Group Selection</a>
+    <a href="#r-unified">⬡ Unified Model</a>
   </nav>
 </div>
 
@@ -160,16 +233,17 @@ button:disabled{opacity:.3;cursor:not-allowed;}
     <div class="rule-label">Rule 1</div>
     <div class="rule-title">Kin Selection</div>
     <div class="rule-condition">
-      <span class="math">r·b &gt; c</span>
-      <span class="math-desc">— Hamilton's Rule (1964)</span>
+      <span class="math">r &gt; c/b</span>
+      <span class="math-desc">— Hamilton's Rule (1964), SOM eq. 2</span>
     </div>
     <div class="rule-desc">
-      Each agent pays cost <strong>c</strong> to provide benefit <strong>b</strong> to a randomly chosen neighbor.
-      Agents are related by <strong>r</strong> (genetic relatedness: 0 = strangers, 1 = clones).
-      An agent cooperates if the <em>inclusive fitness gain</em> r·b exceeds its personal cost c.
-      When r·b > c, cooperators spread. Agents reproduce proportional to their accumulated payoff,
-      and offspring replace random neighbors — so relatedness emerges naturally as cooperator clusters form.
-      Mutation flips strategy with probability 0.01 each generation.
+      Population is <strong>well-mixed</strong> (every generation each agent is paired with 8 random partners — kin selection
+      does not require spatial structure, only relatedness). Each pairwise game uses the exact inclusive-fitness payoff
+      matrix derived in the SOM: <code>C-C=(b-c)(1+r)</code>, <code>C-D=br-c</code>, <code>D-C=b-rc</code>, <code>D-D=0</code>,
+      i.e. <em>my fitness = my own payoff + r × my partner's payoff</em>. This matrix makes cooperators strictly dominant
+      exactly when <strong>b/c &gt; 1/r</strong> (equivalently r &gt; c/b). Strategy updates follow a Fermi imitation rule:
+      an agent copies the fitter of 8 random individuals with probability rising with the fitness gap and selection
+      strength ω.
     </div>
     <div class="sliders" id="sl1">
       <div class="sl-row"><span class="sl-label">Relatedness (r)</span><input type="range" id="r1-r" min="0" max="1" step="0.01" value="0.3"/><span class="sl-val" id="v1-r">0.30</span></div>
@@ -206,16 +280,15 @@ button:disabled{opacity:.3;cursor:not-allowed;}
     <div class="rule-title">Direct Reciprocity</div>
     <div class="rule-condition">
       <span class="math">w &gt; c/b</span>
-      <span class="math-desc">— w = prob. of next encounter</span>
+      <span class="math-desc">— w = prob. of next round, SOM eq. 4</span>
     </div>
     <div class="rule-desc">
-      A population of agents plays the <strong>Iterated Prisoner's Dilemma</strong>.
-      Strategies: <em>AllC</em> (always cooperate), <em>AllD</em> (always defect),
-      <em>TFT</em> (Tit-for-Tat: cooperate first, then mirror partner's last move),
-      <em>GTFT</em> (Generous TFT: cooperate with prob. 1−c/b after opponent defects).
-      After each round, partners meet again with probability <strong>w</strong>.
-      When w > c/b, TFT and GTFT can resist invasion by AllD and dominate the population.
-      Fitness is accumulated payoff; agents reproduce and replace neighbors proportionally.
+      Well-mixed population playing the <strong>repeated Prisoner's Dilemma</strong> with continuation probability
+      <strong>w</strong>. Strategies: <em>AllC</em>, <em>AllD</em>, <em>TFT</em>, <em>GTFT</em> (forgives with probability
+      1−c/b, exactly as in the main text). Payoffs are the <strong>exact closed-form</strong> sums of the underlying
+      geometric series — e.g. <code>TFT vs TFT = (b-c)/(1-w)</code>, <code>TFT vs AllD = -c</code>,
+      <code>AllD vs TFT = b</code> — reproducing the SOM's 2×2 matrix exactly rather than approximating it by
+      simulating a capped number of rounds. TFT/GTFT can resist invasion by AllD exactly when w &gt; c/b.
     </div>
     <div class="sliders">
       <div class="sl-row"><span class="sl-label">Continuation prob. (w)</span><input type="range" id="r2-w" min="0.01" max="0.99" step="0.01" value="0.5"/><span class="sl-val" id="v2-w">0.50</span></div>
@@ -252,22 +325,23 @@ button:disabled{opacity:.3;cursor:not-allowed;}
     <div class="rule-title">Indirect Reciprocity</div>
     <div class="rule-condition">
       <span class="math">q &gt; c/b</span>
-      <span class="math-desc">— q = prob. of knowing reputation</span>
+      <span class="math-desc">— q = prob. of knowing reputation, SOM eq. 5</span>
     </div>
     <div class="rule-desc">
-      Each agent has a public <strong>reputation score</strong> (0–1).
-      When agent A is asked to help B, A cooperates if it knows B's reputation (<em>with prob. q</em>)
-      and B's reputation exceeds threshold θ. If A does not know B's reputation, A cooperates with prob. 0.5.
-      Cooperation raises B's reputation; defection lowers it.
-      When q > c/b, agents can identify and selectively help high-reputation cooperators,
-      making cooperation stable. The reputation system acts as a decentralized enforcement mechanism —
-      "I help you, and others will help me because they see me as a cooperator."
+      Well-mixed population of two strategies: <strong>discriminators</strong> (help unless they know the recipient
+      is a defector) and <strong>defectors</strong> (never help). With probability <strong>q</strong> the donor
+      correctly learns whether the recipient truly is a defector and refuses to help them — this exactly reproduces
+      the SOM matrix <code>C-C=b-c</code>, <code>C-D=-c(1-q)</code>, <code>D-C=b(1-q)</code>, <code>D-D=0</code> in
+      expectation, at every generation, not just at equilibrium. The green "Avg Reputation" readout is a separate,
+      cosmetic running average of each agent's recent realized cooperation (the "graded image score" the SOM
+      mentions as the harder, unsolved case) — it tracks behavior for display but does not feed back into the
+      game itself, so it can never desynchronize the dynamics from the exact matrix above. Cooperation is stable
+      exactly when q &gt; c/b.
     </div>
     <div class="sliders">
       <div class="sl-row"><span class="sl-label">Knowledge prob. (q)</span><input type="range" id="r3-q" min="0.01" max="1" step="0.01" value="0.4"/><span class="sl-val" id="v3-q">0.40</span></div>
       <div class="sl-row"><span class="sl-label">Benefit (b)</span><input type="range" id="r3-b" min="1" max="10" step="0.1" value="3"/><span class="sl-val" id="v3-b">3.0</span></div>
       <div class="sl-row"><span class="sl-label">Cost (c)</span><input type="range" id="r3-c" min="0.1" max="5" step="0.1" value="1"/><span class="sl-val" id="v3-c">1.0</span></div>
-      <div class="sl-row"><span class="sl-label">Rep. threshold (θ)</span><input type="range" id="r3-th" min="0" max="1" step="0.05" value="0.5"/><span class="sl-val" id="v3-th">0.50</span></div>
     </div>
     <div class="cond-bar" id="cond3">
       <div class="cond-light" id="cl3"></div>
@@ -299,16 +373,16 @@ button:disabled{opacity:.3;cursor:not-allowed;}
     <div class="rule-title">Network Reciprocity</div>
     <div class="rule-condition">
       <span class="math">b/c &gt; k</span>
-      <span class="math-desc">— k = avg. number of neighbors</span>
+      <span class="math-desc">— k = avg. number of neighbors, ref. 41 (Ohtsuki et al. 2006)</span>
     </div>
     <div class="rule-desc">
-      The classic <strong>Nowak &amp; May (1992)</strong> spatial model.
-      Agents occupy a grid and interact only with their k neighbors.
-      Cooperators pay cost <strong>c</strong> to give benefit <strong>b</strong> to each neighbor.
-      Defectors give nothing. Each agent accumulates payoff from all neighbor interactions,
-      then the weakest neighbor's strategy is replaced by a copy of the highest-scoring neighbor's strategy.
-      When b/c > k, cooperators form tight clusters where mutual benefit outweighs local exploitation —
-      the exact mechanism absent in well-mixed populations.
+      Agents occupy a lattice and interact only with their <strong>k</strong> neighbors. A cooperator pays cost
+      <strong>c</strong> for each neighbor to receive benefit <strong>b</strong>; defectors pay nothing and give
+      nothing — the literal cost/benefit rule from the main text. Updating follows the SOM's evolutionary-graph-theory
+      process exactly: <em>a random individual dies, and its neighbors compete to fill the vacancy proportional to
+      fitness</em> <code>1−ω+ωP</code>. Pair-approximation under this process shows cooperators reach fixation more
+      often than 1/N exactly when b/c &gt; k, for <strong>weak selection</strong> (small ω) — try raising ω to see the
+      prediction degrade outside that regime.
     </div>
     <div class="sliders">
       <div class="sl-row"><span class="sl-label">Benefit (b)</span><input type="range" id="r4-b" min="1" max="20" step="0.5" value="5"/><span class="sl-val" id="v4-b">5.0</span></div>
@@ -320,6 +394,7 @@ button:disabled{opacity:.3;cursor:not-allowed;}
         </select>
         <span class="sl-val" id="v4-k">8</span>
       </div>
+      <div class="sl-row"><span class="sl-label">Selection int. (ω)</span><input type="range" id="r4-omega" min="0.02" max="3" step="0.02" value="0.3"/><span class="sl-val" id="v4-omega">0.30</span></div>
     </div>
     <div class="cond-bar" id="cond4">
       <div class="cond-light" id="cl4"></div>
@@ -351,22 +426,24 @@ button:disabled{opacity:.3;cursor:not-allowed;}
     <div class="rule-title">Group Selection</div>
     <div class="rule-condition">
       <span class="math">b/c &gt; 1 + n/m</span>
-      <span class="math-desc">— n = group size, m = # of groups</span>
+      <span class="math-desc">— n = max group size, m = # of groups, SOM section 5</span>
     </div>
     <div class="rule-desc">
-      The population is divided into <strong>m groups</strong>, each of size up to <strong>n</strong>.
-      Within each group, defectors outcompete cooperators (individual selection).
-      But groups with more cooperators accumulate higher <em>total payoff</em> and
-      therefore have higher probability of <strong>splitting</strong>: the group divides in two,
-      and the smallest other group is eliminated to keep total population size constant.
-      When b/c > 1 + n/m, group-level selection overcomes individual-level defection pressure,
-      and cooperators can dominate the global population.
+      Literal implementation of the SOM's two-level model: the population is split into <strong>m</strong> groups,
+      each capped at size <strong>n</strong>. Each tick, one individual from the <em>entire population</em> is chosen
+      to reproduce proportional to fitness <code>1−ω+ωP</code> (P from the in-group game <code>C-C=b-c, C-D=-c,
+      D-C=b, D-D=0</code>); its offspring is added to its own group. If that group has just reached size n, with
+      probability <strong>p</strong> it <em>splits</em> in two and a randomly chosen group elsewhere goes extinct;
+      otherwise a random member of that (now full) group dies. Lower-level selection always favors defectors, but
+      higher-level selection between groups favors cooperators — net cooperation wins exactly when b/c &gt; 1+n/m.
     </div>
     <div class="sliders">
       <div class="sl-row"><span class="sl-label">Benefit (b)</span><input type="range" id="r5-b" min="1" max="20" step="0.5" value="5"/><span class="sl-val" id="v5-b">5.0</span></div>
       <div class="sl-row"><span class="sl-label">Cost (c)</span><input type="range" id="r5-c" min="0.1" max="5" step="0.1" value="1"/><span class="sl-val" id="v5-c">1.0</span></div>
       <div class="sl-row"><span class="sl-label">Max group size (n)</span><input type="range" id="r5-n" min="4" max="30" step="1" value="10"/><span class="sl-val" id="v5-n">10</span></div>
       <div class="sl-row"><span class="sl-label">Num groups (m)</span><input type="range" id="r5-m" min="4" max="30" step="1" value="10"/><span class="sl-val" id="v5-m">10</span></div>
+      <div class="sl-row"><span class="sl-label">Split prob. (p)</span><input type="range" id="r5-p" min="0.05" max="1" step="0.05" value="0.5"/><span class="sl-val" id="v5-p">0.50</span></div>
+      <div class="sl-row"><span class="sl-label">Selection int. (ω)</span><input type="range" id="r5-omega" min="0.02" max="3" step="0.02" value="0.3"/><span class="sl-val" id="v5-omega">0.30</span></div>
     </div>
     <div class="cond-bar" id="cond5">
       <div class="cond-light" id="cl5"></div>
@@ -385,18 +462,311 @@ button:disabled{opacity:.3;cursor:not-allowed;}
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════════════════
+     UNIFIED SIMULATION
+══════════════════════════════════════════════════════════════ -->
+<div class="unified-header" id="r-unified">
+  <h2>⬡ UNIFIED SIMULATION — All Five Rules, One Coherent Engine</h2>
+  <p>
+    This is not in the paper — Nowak analyzes each mechanism separately. But all five reduce, in the SOM, to a
+    2×2 payoff-matrix transformation of the same baseline game <code>C-C=b-c, C-D=-c, D-C=b, D-D=0</code>. Here every
+    mechanism is wired in as <strong>exactly that same transformation</strong>, applied simultaneously and compositionally,
+    so that switching any four off reduces the model <em>exactly</em> to the one remaining rule's standalone matrix.
+  </p>
+  <div class="formula-box">
+    <span class="fk">payoff(i,j)</span> = repeated-game value of <span class="fk">(effStrategy_i, effStrategy_j)</span> with continuation <span class="fk">w</span> (Direct, off ⇒ w=0)<br/>
+    <span class="fk">effStrategy_i</span> = ALLD if Indirect-on and (prob q) i correctly learns j truly is a defector, else strategy_i (Indirect)<br/>
+    <span class="fk">fitness_i</span> += payoff(i,j) + <span class="fk">r</span>·payoff(j,i) for each partner j &nbsp; (Kin, off ⇒ r=0)<br/>
+    partners j = lattice neighbors (Network on) | random same-group mates (Group on, Network off) | random global (both off)<br/>
+    reproduction = Fermi imitation of the fittest partner; groups additionally compete border-vs-border (Group on)
+  </div>
+</div>
+
+<div class="unified-block">
+  <div class="u-vis">
+    <canvas id="ucv" width="100" height="100" style="width:380px;height:380px"></canvas>
+    <canvas id="uch" width="380" height="130" style="width:380px;height:130px;background:var(--surf);border:1px solid var(--border);border-radius:4px;"></canvas>
+    <div style="display:flex;flex-direction:column;gap:6px;width:380px;">
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;">Color view</div>
+      <div class="view-tabs" id="u-view-tabs">
+        <div class="view-tab active" data-view="strategy">Strategy</div>
+        <div class="view-tab" data-view="reputation">Reputation</div>
+        <div class="view-tab" data-view="group">Group</div>
+        <div class="view-tab" data-view="fitness">Fitness</div>
+      </div>
+      <div class="legend-row" id="u-legend"></div>
+    </div>
+  </div>
+
+  <div class="u-info">
+    <div>
+      <div class="u-section-label">Active Mechanisms</div>
+      <div class="mech-grid">
+        <label class="mech-toggle active" id="mt-kin">
+          <input type="checkbox" id="u-kin" checked/>
+          <div><div class="mech-toggle-label">1. Kin Selection</div><div class="mech-toggle-sub">r &gt; c/b</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-dr">
+          <input type="checkbox" id="u-dr" checked/>
+          <div><div class="mech-toggle-label">2. Direct Reciprocity</div><div class="mech-toggle-sub">w &gt; c/b</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-ir">
+          <input type="checkbox" id="u-ir" checked/>
+          <div><div class="mech-toggle-label">3. Indirect Reciprocity</div><div class="mech-toggle-sub">q &gt; c/b</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-nr">
+          <input type="checkbox" id="u-nr" checked/>
+          <div><div class="mech-toggle-label">4. Network Reciprocity</div><div class="mech-toggle-sub">b/c &gt; k</div></div>
+        </label>
+        <label class="mech-toggle active" id="mt-gs">
+          <input type="checkbox" id="u-gs" checked/>
+          <div><div class="mech-toggle-label">5. Group Selection</div><div class="mech-toggle-sub">b/c &gt; 1+n/m</div></div>
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <div class="u-section-label">Shared Parameters</div>
+      <div class="sliders">
+        <div class="sl-row"><span class="sl-label">Benefit (b)</span><input type="range" id="u-b" min="1" max="15" step="0.5" value="5"/><span class="sl-val" id="uv-b">5.0</span></div>
+        <div class="sl-row"><span class="sl-label">Cost (c)</span><input type="range" id="u-c" min="0.1" max="5" step="0.1" value="1"/><span class="sl-val" id="uv-c">1.0</span></div>
+        <div class="sl-row"><span class="sl-label">Init. coop. rate</span><input type="range" id="u-init" min="0.05" max="0.95" step="0.05" value="0.5"/><span class="sl-val" id="uv-init">50%</span></div>
+        <div class="sl-row"><span class="sl-label">Mutation rate</span><input type="range" id="u-mut" min="0" max="0.1" step="0.005" value="0.01"/><span class="sl-val" id="uv-mut">0.010</span></div>
+        <div class="sl-row"><span class="sl-label">Selection int. (ω)</span><input type="range" id="u-omega" min="0.02" max="3" step="0.02" value="0.3"/><span class="sl-val" id="uv-omega">0.30</span></div>
+        <div class="sl-row"><span class="sl-label">Speed</span><input type="range" id="u-speed" min="1" max="20" step="1" value="8"/><span class="sl-val" id="uv-speed">8</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="u-section-label">Mechanism Strengths</div>
+      <div class="sliders">
+        <div class="sl-row"><span class="sl-label">Relatedness (r)</span><input type="range" id="u-r" min="0" max="1" step="0.05" value="0.3"/><span class="sl-val" id="uv-r">0.30</span></div>
+        <div class="sl-row"><span class="sl-label">Continuation (w)</span><input type="range" id="u-w" min="0.01" max="0.99" step="0.01" value="0.5"/><span class="sl-val" id="uv-w">0.50</span></div>
+        <div class="sl-row"><span class="sl-label">Rep. knowledge (q)</span><input type="range" id="u-q" min="0.01" max="1" step="0.01" value="0.4"/><span class="sl-val" id="uv-q">0.40</span></div>
+        <div class="sl-row"><span class="sl-label">Groups (m)</span><input type="range" id="u-m" min="4" max="25" step="1" value="10"/><span class="sl-val" id="uv-m">10</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="u-section-label">Condition Status (live, from real parameters)</div>
+      <div class="cond-grid">
+        <div class="u-cond"><div class="u-cond-dot" id="ud1"></div><span class="u-cond-text"><span>Kin:</span> r vs c/b &nbsp;<span id="ut1"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud2"></div><span class="u-cond-text"><span>Direct:</span> w vs c/b &nbsp;<span id="ut2"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud3"></div><span class="u-cond-text"><span>Indirect:</span> q vs c/b &nbsp;<span id="ut3"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud4"></div><span class="u-cond-text"><span>Network:</span> b/c vs k=8 &nbsp;<span id="ut4"></span></span></div>
+        <div class="u-cond"><div class="u-cond-dot" id="ud5"></div><span class="u-cond-text"><span>Group:</span> b/c vs 1+n/m (n=N²/m, live) &nbsp;<span id="ut5"></span></span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="u-section-label">Population</div>
+      <div class="u-stats-grid">
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--C)" id="us-allc">–</div><div class="u-stat-lbl">AllC</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#80ee80" id="us-tft">–</div><div class="u-stat-lbl">TFT/GTFT</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--D)" id="us-alld">–</div><div class="u-stat-lbl">AllD</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--hi)" id="us-gen">0</div><div class="u-stat-lbl">Generation</div></div>
+      </div>
+      <div style="margin-top:8px;" class="u-stats-grid">
+        <div class="u-stat"><div class="u-stat-val" style="color:var(--green)" id="us-rep">–</div><div class="u-stat-lbl">Avg Reputation</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-coop">–</div><div class="u-stat-lbl">Coop. Rate</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-fit">–</div><div class="u-stat-lbl">Avg Fitness</div></div>
+        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-grp">–</div><div class="u-stat-lbl">Avg Grp Coop</div></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-run" id="ubtn-run">▶ Run</button>
+      <button class="btn-step" id="ubtn-step">Step</button>
+      <button class="btn-reset" id="ubtn-reset">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════════════════════════════════════════
-// SHARED UTILITIES
+// CORE ENGINE — shared by all five rule blocks and the unified model.
+// Every mechanism is implemented as the exact matrix/equation from the
+// paper (Table 1) or its SOM, not as an independent heuristic.
 // ══════════════════════════════════════════════════════════════
-const C_COL = [74, 158, 255];
-const D_COL = [224, 68, 68];
-const MUT = 0.01;
+const ALLC=0, TFT=1, GTFT=2, ALLD=3;
+const STRAT_COLORS = { 0:[74,158,255], 1:[80,220,130], 2:[180,140,255], 3:[224,68,68] };
 
 function rand(){ return Math.random(); }
 function randInt(n){ return Math.floor(Math.random()*n); }
 function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
 
+// Exact closed-form total payoff 'A' earns from its interaction with 'B',
+// using EFFECTIVE strategies (post reputation-gating, see step()).
+//   w<=0 : single-shot donor/recipient game   -> SOM eq. 1 / eq. 5
+//   w>0  : infinitely repeated game, continuation prob. w -> SOM eq. 4
+// Derivation: each term is the exact sum of the geometric series implied
+// by "the game continues with probability w each round" (SOM section 2).
+function pairPayoff(effA, effB, b, c, w, f){
+  if (w<=0){
+    const aC = effA!==ALLD, bC = effB!==ALLD;
+    return (aC?-c:0) + (bC?b:0);
+  }
+  if (effA===ALLD && effB===ALLD) return 0;
+  if (effA===ALLD){
+    if (effB===ALLC) return b/(1-w);
+    if (effB===TFT)  return b;
+    if (effB===GTFT) return b/(1-w*f);
+  }
+  if (effB===ALLD){
+    if (effA===ALLC) return -c/(1-w);
+    if (effA===TFT)  return -c;
+    if (effA===GTFT) return -c/(1-w*f);
+  }
+  return (b-c)/(1-w); // neither is steadfastly defecting -> mutual cooperation forever
+}
+
+function createSim(N){
+  const N2=N*N;
+  return {
+    N, N2,
+    strategy:new Uint8Array(N2),
+    rep:new Float32Array(N2),
+    group:new Uint16Array(N2),
+    fitness:new Float32Array(N2),
+    nbCache:null,
+    groupMembers:[{length:0}],
+    m:1,
+    gen:0,
+  };
+}
+
+function buildNeighbors(sim,k){
+  const N=sim.N, nb=[];
+  for(let r=0;r<N;r++) for(let c=0;c<N;c++){
+    const list=[];
+    for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+      if(!dr&&!dc) continue;
+      if(k===4 && Math.abs(dr)+Math.abs(dc)!==1) continue;
+      list.push(((r+dr+N)%N)*N+((c+dc+N)%N));
+    }
+    nb.push(list);
+  }
+  sim.nbCache=nb;
+}
+
+// Partition the lattice into m roughly-equal rectangular groups (used by
+// Group selection's well-mixed-within-group pool, and by the unified model).
+function buildGroups(sim,m){
+  const N=sim.N;
+  const cols=Math.ceil(Math.sqrt(m)), rows=Math.ceil(m/cols);
+  const cw=Math.ceil(N/cols), ch=Math.ceil(N/rows);
+  sim.m=m;
+  sim.groupMembers=Array.from({length:m},()=>[]);
+  for(let i=0;i<sim.N2;i++){
+    const r=Math.floor(i/N), c=i%N;
+    const gr=Math.floor(r/ch), gc=Math.floor(c/cw);
+    const g=Math.min(gr*cols+gc, m-1);
+    sim.group[i]=g;
+    sim.groupMembers[g].push(i);
+  }
+}
+
+function randomPoolGlobal(sim,k){ const out=[]; for(let t=0;t<k;t++) out.push(randInt(sim.N2)); return out; }
+function randomPoolFromGroup(sim,i,k){
+  const members=sim.groupMembers[sim.group[i]];
+  const out=[]; for(let t=0;t<k;t++) out.push(members[randInt(members.length)]); return out;
+}
+function getPool(sim,i,p){
+  if(p.active.nr) return sim.nbCache[i];
+  if(p.active.gs) return randomPoolFromGroup(sim,i,8);
+  return randomPoolGlobal(sim,8);
+}
+
+// One generation of the shared engine: payoff accrual (with Kin/Indirect
+// layered in) -> Fermi imitation update -> optional Group-level competition.
+function step(sim,p){
+  const N2=sim.N2;
+  const newStrategy=sim.strategy.slice();
+  const newRep=sim.rep.slice();
+  const fitness=sim.fitness;
+  fitness.fill(0);
+  const f=Math.max(0,1-p.c/p.b);
+  const w=p.active.dr?p.w:0;
+
+  for(let i=0;i<N2;i++){
+    const pool=getPool(sim,i,p);
+    let fit=0, coopCount=0;
+    for(const j of pool){
+      // Indirect reciprocity gates on the partner's TRUE strategy, not the
+      // cosmetic reputation score below -- this is what makes "q" mean
+      // exactly "probability of knowing someone IS a defector" as in the
+      // SOM, and keeps the realized dynamics matching matrix eq.5 exactly
+      // at all times (a noisy/lagged proxy would let transient mismatches
+      // tip the population into the wrong basin of the bistable game).
+      const iGates = p.active.ir && rand()<p.q && sim.strategy[j]===ALLD;
+      const jGates = p.active.ir && rand()<p.q && sim.strategy[i]===ALLD;
+      const effI = iGates?ALLD:sim.strategy[i];
+      const effJ = jGates?ALLD:sim.strategy[j];
+      const payI = pairPayoff(effI,effJ,p.b,p.c,w,f);
+      const kinTerm = p.active.kin ? p.r*pairPayoff(effJ,effI,p.b,p.c,w,f) : 0;
+      fit += payI + kinTerm;
+      if(effI!==ALLD) coopCount++;
+    }
+    fitness[i]=fit;
+    newRep[i]=clamp(sim.rep[i]*0.9 + 0.1*(coopCount/pool.length),0,1);
+  }
+
+  for(let i=0;i<N2;i++){
+    const pool=getPool(sim,i,p);
+    let bestJ=-1,bestFit=fitness[i];
+    for(const j of pool) if(fitness[j]>bestFit){bestFit=fitness[j];bestJ=j;}
+    if(bestJ>=0){
+      const pAdopt=1/(1+Math.exp(-p.omega*(bestFit-fitness[i])));
+      if(rand()<pAdopt) newStrategy[i]=sim.strategy[bestJ];
+    }
+    if(rand()<p.mut) newStrategy[i]=p.allowed[randInt(p.allowed.length)];
+  }
+
+  if(p.active.gs) applyGroupSelection(sim,fitness,newStrategy,p);
+
+  sim.strategy=newStrategy; sim.rep=newRep; sim.gen++;
+}
+
+// Between-group competition: groups with higher mean fitness expand at the
+// expense of groups with lower mean fitness -- the spatial/well-mixed analog
+// of "successful groups split, unsuccessful groups go extinct" (SOM sec. 5).
+function applyGroupSelection(sim,fitness,newStrategy,p){
+  const m=sim.m;
+  const sum=new Float64Array(m), cnt=new Float64Array(m);
+  for(let i=0;i<sim.N2;i++){ sum[sim.group[i]]+=fitness[i]; cnt[sim.group[i]]++; }
+  const mean=new Float64Array(m);
+  for(let g=0;g<m;g++) mean[g]=cnt[g]?sum[g]/cnt[g]:0;
+
+  if(p.active.nr){
+    for(let i=0;i<sim.N2;i++){
+      const myG=sim.group[i];
+      let bestFit=mean[myG], bestJ=-1;
+      for(const j of sim.nbCache[i]){
+        const ng=sim.group[j];
+        if(ng!==myG && mean[ng]>bestFit){ bestFit=mean[ng]; bestJ=j; }
+      }
+      if(bestJ>=0){
+        const diff=bestFit-mean[myG];
+        const pFlip=(1/(1+Math.exp(-p.omega*diff)))*0.5;
+        if(rand()<pFlip) newStrategy[i]=newStrategy[bestJ];
+      }
+    }
+  } else {
+    let bestG=0,worstG=0;
+    for(let g=1;g<m;g++){ if(mean[g]>mean[bestG]) bestG=g; if(mean[g]<mean[worstG]) worstG=g; }
+    if(bestG!==worstG){
+      const bm=sim.groupMembers[bestG], wm=sim.groupMembers[worstG];
+      if(bm.length && wm.length){
+        const donor=bm[randInt(bm.length)], target=wm[randInt(wm.length)];
+        newStrategy[target]=newStrategy[donor];
+      }
+    }
+  }
+}
+
+function countCoop(sim){ let n=0; for(let i=0;i<sim.N2;i++) if(sim.strategy[i]!==ALLD) n++; return n; }
+
+// ── generic UI helpers ──────────────────────────────────────────
 function makeRunLoop(simObj){
   let running=false, rafId=null, lastTime=null, acc=0;
   const TICK_MS=80;
@@ -408,48 +778,26 @@ function makeRunLoop(simObj){
     rafId=requestAnimationFrame(loop);
   }
   return {
-    start(){
-      if(running)return;
-      running=true; lastTime=null; acc=0;
-      rafId=requestAnimationFrame(loop);
-    },
-    stop(){
-      running=false;
-      if(rafId){cancelAnimationFrame(rafId);rafId=null;}
-    },
-    toggle(btnEl){
-      if(running){this.stop();btnEl.textContent='▶ Run';}
-      else{this.start();btnEl.textContent='⏸ Pause';}
-    },
+    start(){ if(running)return; running=true; lastTime=null; acc=0; rafId=requestAnimationFrame(loop); },
+    stop(){ running=false; if(rafId){cancelAnimationFrame(rafId);rafId=null;} },
+    toggle(btnEl){ if(running){this.stop();btnEl.textContent='▶ Run';} else {this.start();btnEl.textContent='⏸ Pause';} },
     isRunning(){ return running; }
   };
 }
 
-// ── chart helper ─────────────────────────────────────────────
 function makeChart(canvasId, series){
-  // series = [{label,color}]
   const c=document.getElementById(canvasId);
   const history=series.map(()=>[]);
   const MAX=200;
   return {
-    push(values){
-      values.forEach((v,i)=>{ history[i].push(v); if(history[i].length>MAX)history[i].shift(); });
-      this.draw();
-    },
-    clear(){
-      history.forEach(h=>h.length=0);
-      const cx=c.getContext('2d');
-      cx.clearRect(0,0,c.width,c.height);
-    },
+    push(values){ values.forEach((v,i)=>{ history[i].push(v); if(history[i].length>MAX)history[i].shift(); }); this.draw(); },
+    clear(){ history.forEach(h=>h.length=0); const cx=c.getContext('2d'); cx.clearRect(0,0,c.width,c.height); },
     draw(){
-      const W=c.width,H=c.height;
-      const cx=c.getContext('2d');
-      cx.clearRect(0,0,W,H);
-      cx.fillStyle='#0e1018'; cx.fillRect(0,0,W,H);
+      const W=c.width,H=c.height; const cx=c.getContext('2d');
+      cx.clearRect(0,0,W,H); cx.fillStyle='#0e1018'; cx.fillRect(0,0,W,H);
       const PAD={top:8,right:8,bottom:20,left:36};
       const pw=W-PAD.left-PAD.right,ph=H-PAD.top-PAD.bottom;
       const len=history[0].length; if(len<2)return;
-      // grid
       cx.strokeStyle='#1c1f2e'; cx.lineWidth=1;
       cx.fillStyle='#5a607a'; cx.font='8px JetBrains Mono,monospace'; cx.textAlign='right';
       for(let i=0;i<=4;i++){
@@ -472,7 +820,6 @@ function makeChart(canvasId, series){
   };
 }
 
-// ── condition indicator ───────────────────────────────────────
 function updateCond(lightId, textId, lhs, rhs, lhsLabel, rhsLabel){
   const met = lhs > rhs;
   const light=document.getElementById(lightId);
@@ -481,246 +828,127 @@ function updateCond(lightId, textId, lhs, rhs, lhsLabel, rhsLabel){
   text.textContent=`${lhsLabel} = ${lhs.toFixed(3)}  ${met?'>':'≤'}  ${rhsLabel} = ${rhs.toFixed(3)}  →  condition ${met?'MET ✓':'NOT MET ✗'}`;
 }
 
-// ── grid canvas helpers ───────────────────────────────────────
-function makeGrid(N){
-  return { coop: new Uint8Array(N*N), fitness: new Float32Array(N*N), N };
-}
-function gridNeighbors(g, r, c, k){
-  const N=g.N, nb=[];
-  for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
-    if(!dr&&!dc) continue;
-    if(k===4 && Math.abs(dr)+Math.abs(dc)!==1) continue;
-    nb.push(((r+dr+N)%N)*N+((c+dc+N)%N));
-  }
-  return nb;
-}
-function renderGrid(g, canvasId, extraColorFn){
+function renderStratGrid(sim, canvasId){
   const c=document.getElementById(canvasId);
   const cx=c.getContext('2d');
-  const N=g.N;
+  const N=sim.N;
   const img=cx.createImageData(N,N);
   const px=img.data;
-  for(let i=0;i<N*N;i++){
-    let col = extraColorFn ? extraColorFn(i,g) : (g.coop[i]?C_COL:D_COL);
+  for(let i=0;i<sim.N2;i++){
+    const col=STRAT_COLORS[sim.strategy[i]];
     const p=i*4; px[p]=col[0];px[p+1]=col[1];px[p+2]=col[2];px[p+3]=255;
   }
   cx.putImageData(img,0,0);
 }
-function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).toFixed(1)+'%'; }
+
+function hslToRgb(h,s,l){
+  let r,g,b;
+  if(!s){r=g=b=l;}
+  else{
+    const hue2rgb=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
+    const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;
+    r=hue2rgb(p,q,h+1/3);g=hue2rgb(p,q,h);b=hue2rgb(p,q,h-1/3);
+  }
+  return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+}
 
 
 // ══════════════════════════════════════════════════════════════
-// RULE 1: KIN SELECTION
+// RULE 1: KIN SELECTION — well-mixed, inclusive-fitness matrix (SOM eq. 2)
 // ══════════════════════════════════════════════════════════════
 (function(){
-  const N=80;
-  let g=makeGrid(N), gen=0;
+  const sim=createSim(80);
+  buildGroups(sim,1);
+  const ALLOWED=[ALLC,ALLD];
   const chart=makeChart('ch1',[{label:'C',color:'#4a9eff'},{label:'D',color:'#e04444'}]);
-
-  function setup(){
-    gen=0;
-    for(let i=0;i<N*N;i++) g.coop[i]=rand()<0.5?1:0;
-    chart.clear(); render(); updateUI();
-  }
 
   function params(){
     return {
-      r: parseFloat(document.getElementById('r1-r').value),
-      b: parseFloat(document.getElementById('r1-b').value),
-      c: parseFloat(document.getElementById('r1-c').value),
+      b:parseFloat(document.getElementById('r1-b').value),
+      c:parseFloat(document.getElementById('r1-c').value),
+      r:parseFloat(document.getElementById('r1-r').value),
+      omega:1, mut:0.01, allowed:ALLOWED,
+      active:{kin:true,dr:false,ir:false,nr:false,gs:false},
     };
   }
-
-  function tick(){
-    const {r,b,c}=params();
-    const N2=N*N;
-    // compute fitness
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N), col=i%N;
-      const nb=gridNeighbors(g,row,col,8);
-      let fit=0;
-      // I give: if cooperator, pay c, give b to each neighbor
-      if(g.coop[i]) fit -= c * nb.length;
-      // I receive: for each cooperating neighbor, gain b
-      for(const j of nb) if(g.coop[j]) fit += b;
-      g.fitness[i]=fit;
-    }
-    // reproduce: each cell, compare with random neighbor
-    const newCoop=g.coop.slice();
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N), col=i%N;
-      const nb=gridNeighbors(g,row,col,8);
-      const j=nb[randInt(nb.length)];
-      // inclusive fitness: weight neighbor fitness by relatedness r
-      const myFit=g.fitness[i];
-      const nbFit=g.fitness[j];
-      // stochastic imitation with relatedness-weighted probability
-      const prob=1/(1+Math.exp(-(nbFit - myFit - r*(nbFit-myFit))));
-      if(rand()<prob) newCoop[i]=g.coop[j];
-      // mutation
-      if(rand()<MUT) newCoop[i]=newCoop[i]?0:1;
-    }
-    g.coop=newCoop;
-    gen++;
-    render(); updateUI();
-    // chart
-    const coops=g.coop.reduce((a,v)=>a+v,0)/N2;
-    chart.push([coops,1-coops]);
+  function setup(){
+    sim.gen=0;
+    for(let i=0;i<sim.N2;i++){ sim.strategy[i]=ALLOWED[randInt(2)]; sim.rep[i]=0.5; }
+    chart.clear(); render(); updateUI();
   }
-
-  function render(){ renderGrid(g,'cv1'); }
-
+  function tick(){ step(sim,params()); render(); updateUI(); const cf=countCoop(sim)/sim.N2; chart.push([cf,1-cf]); }
+  function render(){ renderStratGrid(sim,'cv1'); }
   function updateUI(){
-    const {r,b,c}=params();
-    const total=g.coop.reduce((a,v)=>a+v,0);
-    const n=g.N*g.N;
-    document.getElementById('s1-c').textContent=(total/n*100).toFixed(1)+'%';
-    document.getElementById('s1-d').textContent=((n-total)/n*100).toFixed(1)+'%';
-    document.getElementById('s1-t').textContent=gen;
-    updateCond('cl1','ct1',r*b,c,'r·b','c');
+    const p=params();
+    const cf=countCoop(sim)/sim.N2;
+    document.getElementById('s1-c').textContent=(cf*100).toFixed(1)+'%';
+    document.getElementById('s1-d').textContent=((1-cf)*100).toFixed(1)+'%';
+    document.getElementById('s1-t').textContent=sim.gen;
+    updateCond('cl1','ct1', p.r, p.c/p.b, 'r', 'c/b');
   }
-
-  // sliders
   ['r1-r','r1-b','r1-c'].forEach(id=>{
-    const el=document.getElementById(id);
-    const key=id.split('-')[1];
-    el.addEventListener('input',()=>{
-      const map={'r':'v1-r','b':'v1-b','c':'v1-c'};
-      document.getElementById(map[key]).textContent=parseFloat(el.value).toFixed(key==='r'?2:1);
+    document.getElementById(id).addEventListener('input',e=>{
+      const map={'r1-r':'v1-r','r1-b':'v1-b','r1-c':'v1-c'};
+      document.getElementById(map[id]).textContent=parseFloat(e.target.value).toFixed(id==='r1-r'?2:1);
       updateUI();
     });
   });
-
   const loop=makeRunLoop({tick});
-  document.getElementById('btn1-run').addEventListener('click',e=>{loop.toggle(e.target);});
+  document.getElementById('btn1-run').addEventListener('click',e=>loop.toggle(e.target));
   document.getElementById('btn1-step').addEventListener('click',()=>tick());
-  document.getElementById('btn1-reset').addEventListener('click',()=>{ loop.stop(); document.getElementById('btn1-run').textContent='▶ Run'; setup(); });
-
+  document.getElementById('btn1-reset').addEventListener('click',()=>{loop.stop();document.getElementById('btn1-run').textContent='▶ Run';setup();});
   setup();
 })();
 
 
 // ══════════════════════════════════════════════════════════════
-// RULE 2: DIRECT RECIPROCITY
-// Strategy encoding: 0=AllD, 1=AllC, 2=TFT, 3=GTFT
+// RULE 2: DIRECT RECIPROCITY — well-mixed, repeated-game matrix (SOM eq. 4)
 // ══════════════════════════════════════════════════════════════
 (function(){
-  const N=80;
-  const STRAT={ALLD:0,ALLC:1,TFT:2,GTFT:3};
-  const STRAT_COL=[[200,50,50],[60,140,255],[80,200,120],[160,120,255]];
-  let strat=new Uint8Array(N*N);
-  let memory=new Uint8Array(N*N); // last move opponent made to me (per cell, simplified)
-  let fitness=new Float32Array(N*N);
-  let gen=0;
+  const sim=createSim(80);
+  buildGroups(sim,1);
+  const ALLOWED=[ALLC,TFT,GTFT,ALLD];
   const chart=makeChart('ch2',[
-    {label:'TFT/GTFT',color:'#4a9eff'},
+    {label:'Coop (AllC+TFT+GTFT)',color:'#4a9eff'},
     {label:'AllD',color:'#e04444'},
-    {label:'AllC',color:'#50c878'},
   ]);
 
   function params(){
     return {
-      w:parseFloat(document.getElementById('r2-w').value),
       b:parseFloat(document.getElementById('r2-b').value),
       c:parseFloat(document.getElementById('r2-c').value),
+      w:parseFloat(document.getElementById('r2-w').value),
+      omega:1, mut:0.01, allowed:ALLOWED,
+      active:{kin:false,dr:true,ir:false,nr:false,gs:false},
     };
   }
-
-  function getMove(myStrat, lastOppMove){
-    switch(myStrat){
-      case STRAT.ALLD: return 0;
-      case STRAT.ALLC: return 1;
-      case STRAT.TFT:  return lastOppMove; // mirror (1=coop on first)
-      case STRAT.GTFT: return lastOppMove===1?1:(rand()<0.1?1:0);
-    }
-    return 1;
-  }
-
-  // Expected payoff of strategy A vs B in repeated game with continuation w
-  function expectedPayoff(sA, sB, b, c, w){
-    // simulate a few rounds
-    let payA=0, lastB=1, lastA=1;
-    const rounds=Math.round(1/(1-w));
-    for(let r=0;r<Math.min(rounds,20);r++){
-      const mA=getMove(sA,lastB);
-      const mB=getMove(sB,lastA);
-      if(mA){ payA-=c; }  // pay cost
-      if(mB){ payA+=b; }  // receive benefit
-      lastA=mA; lastB=mB;
-    }
-    return payA/Math.max(1,rounds);
-  }
-
   function setup(){
-    gen=0;
-    for(let i=0;i<N*N;i++){
-      strat[i]=randInt(4);
-      memory[i]=1; // assume first move was cooperate
-    }
+    sim.gen=0;
+    for(let i=0;i<sim.N2;i++){ sim.strategy[i]=ALLOWED[randInt(4)]; sim.rep[i]=0.5; }
     chart.clear(); render(); updateUI();
   }
-
-  function tick(){
-    const {w,b,c}=params();
-    const N2=N*N;
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N),col=i%N;
-      const nb=gridNeighbors({N,coop:strat},row,col,8);
-      let fit=0;
-      for(const j of nb) fit+=expectedPayoff(strat[i],strat[j],b,c,w);
-      fitness[i]=fit;
-    }
-    const newStrat=strat.slice();
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N),col=i%N;
-      const nb=gridNeighbors({N,coop:strat},row,col,8);
-      let bestFit=fitness[i], bestStrat=strat[i];
-      for(const j of nb){
-        if(fitness[j]>bestFit){ bestFit=fitness[j]; bestStrat=strat[j]; }
-      }
-      newStrat[i]=bestStrat;
-      if(rand()<MUT) newStrat[i]=randInt(4);
-    }
-    strat=newStrat; gen++;
-    render(); updateUI();
-    const n=N2;
-    const tft=(strat.filter(s=>s===STRAT.TFT||s===STRAT.GTFT).length)/n;
-    const alld=strat.filter(s=>s===STRAT.ALLD).length/n;
-    const allc=strat.filter(s=>s===STRAT.ALLC).length/n;
-    chart.push([tft,alld,allc]);
+  function tick(){ step(sim,params()); render(); updateUI();
+    const n=sim.N2, coop=countCoop(sim)/n, alld=1-coop;
+    chart.push([coop,alld]);
   }
-
-  function render(){
-    const c=document.getElementById('cv2');
-    const cx=c.getContext('2d');
-    const img=cx.createImageData(N,N); const px=img.data;
-    for(let i=0;i<N*N;i++){
-      const col=STRAT_COL[strat[i]];
-      const p=i*4;px[p]=col[0];px[p+1]=col[1];px[p+2]=col[2];px[p+3]=255;
-    }
-    cx.putImageData(img,0,0);
-  }
-
+  function render(){ renderStratGrid(sim,'cv2'); }
   function updateUI(){
-    const {w,b,c}=params();
-    const n=N*N;
-    const tft=strat.filter(s=>s===STRAT.TFT||s===STRAT.GTFT).length;
-    const alld=strat.filter(s=>s===STRAT.ALLD).length;
+    const p=params();
+    const n=sim.N2;
+    let tft=0,alld=0;
+    for(let i=0;i<n;i++){ const s=sim.strategy[i]; if(s===TFT||s===GTFT) tft++; if(s===ALLD) alld++; }
     document.getElementById('s2-tft').textContent=(tft/n*100).toFixed(1)+'%';
     document.getElementById('s2-d').textContent=(alld/n*100).toFixed(1)+'%';
-    document.getElementById('s2-t').textContent=gen;
-    updateCond('cl2','ct2',w,c/b,'w','c/b');
+    document.getElementById('s2-t').textContent=sim.gen;
+    updateCond('cl2','ct2', p.w, p.c/p.b, 'w', 'c/b');
   }
-
   ['r2-w','r2-b','r2-c'].forEach(id=>{
     document.getElementById(id).addEventListener('input',e=>{
-      const map={'w':'v2-w','b':'v2-b','c':'v2-c'};
-      const key=id.split('-')[1];
-      document.getElementById(map[key]).textContent=parseFloat(e.target.value).toFixed(2);
+      const map={'r2-w':'v2-w','r2-b':'v2-b','r2-c':'v2-c'};
+      document.getElementById(map[id]).textContent=parseFloat(e.target.value).toFixed(2);
       updateUI();
     });
   });
-
   const loop=makeRunLoop({tick});
   document.getElementById('btn2-run').addEventListener('click',e=>loop.toggle(e.target));
   document.getElementById('btn2-step').addEventListener('click',()=>tick());
@@ -730,14 +958,12 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
 
 
 // ══════════════════════════════════════════════════════════════
-// RULE 3: INDIRECT RECIPROCITY
+// RULE 3: INDIRECT RECIPROCITY — well-mixed, reputation matrix (SOM eq. 5)
 // ══════════════════════════════════════════════════════════════
 (function(){
-  const N=80, N2=N*N;
-  let coop=new Uint8Array(N2);   // current strategy tendency (1=cooperator)
-  let rep=new Float32Array(N2);  // reputation 0–1
-  let fitness=new Float32Array(N2);
-  let gen=0;
+  const sim=createSim(80);
+  buildGroups(sim,1);
+  const ALLOWED=[ALLC,ALLD];
   const chart=makeChart('ch3',[
     {label:'Cooperation rate',color:'#4a9eff'},
     {label:'Avg reputation',color:'#40c870'},
@@ -745,92 +971,49 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
 
   function params(){
     return {
-      q:parseFloat(document.getElementById('r3-q').value),
       b:parseFloat(document.getElementById('r3-b').value),
       c:parseFloat(document.getElementById('r3-c').value),
-      th:parseFloat(document.getElementById('r3-th').value),
+      q:parseFloat(document.getElementById('r3-q').value),
+      omega:1, mut:0.01, allowed:ALLOWED,
+      active:{kin:false,dr:false,ir:true,nr:false,gs:false},
     };
   }
-
   function setup(){
-    gen=0;
-    for(let i=0;i<N2;i++){ coop[i]=rand()<0.5?1:0; rep[i]=rand(); }
+    sim.gen=0;
+    for(let i=0;i<sim.N2;i++){ sim.strategy[i]=ALLOWED[randInt(2)]; sim.rep[i]=rand(); }
     chart.clear(); render(); updateUI();
   }
-
-  function tick(){
-    const {q,b,c,th}=params();
-    // each cell interacts with neighbors
-    const newCoop=coop.slice();
-    const newRep=rep.slice();
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N),col=i%N;
-      const nb=gridNeighbors({N,coop},row,col,8);
-      let fit=0;
-      for(const j of nb){
-        // i decides whether to help j
-        let doHelp;
-        if(rand()<q){
-          doHelp = rep[j]>=th ? 1:0;
-        } else {
-          doHelp = rand()<0.5?1:0;
-        }
-        if(doHelp){ fit-=c; newRep[i]=Math.min(1,rep[i]+0.1); }
-        else       { newRep[i]=Math.max(0,rep[i]-0.05); }
-        // j receives
-        if(doHelp) fit+=b; // simplified: same cell tracks net
-      }
-      fitness[i]=fit;
-    }
-    // strategy update: imitate best neighbor
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N),col=i%N;
-      const nb=gridNeighbors({N,coop},row,col,8);
-      let bestFit=fitness[i],bestStrat=coop[i];
-      for(const j of nb){ if(fitness[j]>bestFit){bestFit=fitness[j];bestStrat=coop[j];} }
-      newCoop[i]=bestStrat;
-      if(rand()<MUT) newCoop[i]=newCoop[i]?0:1;
-    }
-    coop=newCoop; rep=newRep; gen++;
-    render(); updateUI();
-    const coopRate=coop.reduce((a,v)=>a+v,0)/N2;
-    const avgRep=rep.reduce((a,v)=>a+v,0)/N2;
-    chart.push([coopRate,avgRep]);
+  function tick(){ step(sim,params()); render(); updateUI();
+    const cf=countCoop(sim)/sim.N2;
+    let repSum=0; for(let i=0;i<sim.N2;i++) repSum+=sim.rep[i];
+    chart.push([cf, repSum/sim.N2]);
   }
-
   function render(){
-    const cv=document.getElementById('cv3');
-    const cx=cv.getContext('2d');
-    const img=cx.createImageData(N,N); const px=img.data;
-    for(let i=0;i<N2;i++){
-      // color by cooperation tendency, brightness by reputation
-      const bright=0.4+rep[i]*0.6;
-      const base=coop[i]?C_COL:D_COL;
-      const p=i*4;
-      px[p]=base[0]*bright; px[p+1]=base[1]*bright; px[p+2]=base[2]*bright; px[p+3]=255;
+    const cv=document.getElementById('cv3'); const cx=cv.getContext('2d');
+    const N=sim.N; const img=cx.createImageData(N,N); const px=img.data;
+    for(let i=0;i<sim.N2;i++){
+      const bright=0.4+sim.rep[i]*0.6;
+      const base=STRAT_COLORS[sim.strategy[i]];
+      const p=i*4; px[p]=base[0]*bright; px[p+1]=base[1]*bright; px[p+2]=base[2]*bright; px[p+3]=255;
     }
     cx.putImageData(img,0,0);
   }
-
   function updateUI(){
-    const {q,b,c}=params();
-    const coopRate=coop.reduce((a,v)=>a+v,0)/N2;
-    const avgRep=rep.reduce((a,v)=>a+v,0)/N2;
-    document.getElementById('s3-c').textContent=(coopRate*100).toFixed(1)+'%';
-    document.getElementById('s3-r').textContent=avgRep.toFixed(2);
-    document.getElementById('s3-t').textContent=gen;
-    updateCond('cl3','ct3',q,c/b,'q','c/b');
+    const p=params();
+    const cf=countCoop(sim)/sim.N2;
+    let repSum=0; for(let i=0;i<sim.N2;i++) repSum+=sim.rep[i];
+    document.getElementById('s3-c').textContent=(cf*100).toFixed(1)+'%';
+    document.getElementById('s3-r').textContent=(repSum/sim.N2).toFixed(2);
+    document.getElementById('s3-t').textContent=sim.gen;
+    updateCond('cl3','ct3', p.q, p.c/p.b, 'q', 'c/b');
   }
-
-  ['r3-q','r3-b','r3-c','r3-th'].forEach(id=>{
+  ['r3-q','r3-b','r3-c'].forEach(id=>{
     document.getElementById(id).addEventListener('input',e=>{
-      const map={'q':'v3-q','b':'v3-b','c':'v3-c','th':'v3-th'};
-      const key=id.split('-')[1];
-      document.getElementById(map[key]).textContent=parseFloat(e.target.value).toFixed(2);
+      const map={'r3-q':'v3-q','r3-b':'v3-b','r3-c':'v3-c'};
+      document.getElementById(map[id]).textContent=parseFloat(e.target.value).toFixed(2);
       updateUI();
     });
   });
-
   const loop=makeRunLoop({tick});
   document.getElementById('btn3-run').addEventListener('click',e=>loop.toggle(e.target));
   document.getElementById('btn3-step').addEventListener('click',()=>tick());
@@ -840,84 +1023,60 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
 
 
 // ══════════════════════════════════════════════════════════════
-// RULE 4: NETWORK RECIPROCITY (Nowak & May 1992)
+// RULE 4: NETWORK RECIPROCITY — spatial lattice, death-birth process
+// matching the evolutionary-graph-theory model (SOM section 4 / ref. 41)
 // ══════════════════════════════════════════════════════════════
 (function(){
-  const N=80, N2=N*N;
-  let coop=new Uint8Array(N2);
-  let fitness=new Float32Array(N2);
-  let gen=0;
+  const sim=createSim(80);
+  buildGroups(sim,1);
+  const ALLOWED=[ALLC,ALLD];
   const chart=makeChart('ch4',[{label:'C',color:'#4a9eff'},{label:'D',color:'#e04444'}]);
 
   function params(){
     return {
       b:parseFloat(document.getElementById('r4-b').value),
       c:parseFloat(document.getElementById('r4-c').value),
-      k:parseInt(document.getElementById('r4-k').value),
+      omega:parseFloat(document.getElementById('r4-omega').value),
+      mut:0.01, allowed:ALLOWED,
+      active:{kin:false,dr:false,ir:false,nr:true,gs:false},
     };
   }
-
+  function currentK(){ return parseInt(document.getElementById('r4-k').value); }
   function setup(){
-    gen=0;
-    for(let i=0;i<N2;i++) coop[i]=rand()<0.5?1:0;
+    sim.gen=0;
+    buildNeighbors(sim,currentK());
+    for(let i=0;i<sim.N2;i++){ sim.strategy[i]=ALLOWED[randInt(2)]; sim.rep[i]=0.5; }
     chart.clear(); render(); updateUI();
   }
-
-  function tick(){
-    const {b,c,k}=params();
-    const g={N,coop};
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N),col=i%N;
-      const nb=gridNeighbors(g,row,col,k);
-      let fit=0;
-      // cooperators pay c, give b to each neighbor
-      if(coop[i]) fit -= c*nb.length;
-      for(const j of nb) if(coop[j]) fit+=b;
-      fitness[i]=fit;
-    }
-    const newCoop=coop.slice();
-    for(let i=0;i<N2;i++){
-      const row=Math.floor(i/N),col=i%N;
-      const nb=gridNeighbors(g,row,col,k);
-      let best=fitness[i],bestStrat=coop[i];
-      for(const j of nb){ if(fitness[j]>best){best=fitness[j];bestStrat=coop[j];} }
-      newCoop[i]=bestStrat;
-    }
-    coop=newCoop; gen++;
-    render(); updateUI();
-    const coops=coop.reduce((a,v)=>a+v,0)/N2;
-    chart.push([coops,1-coops]);
-  }
-
-  function render(){ const g={N,coop}; renderGrid(g,'cv4'); }
-
+  function tick(){ step(sim,params()); render(); updateUI(); const cf=countCoop(sim)/sim.N2; chart.push([cf,1-cf]); }
+  function render(){ renderStratGrid(sim,'cv4'); }
   function updateUI(){
-    const {b,c,k}=params();
-    const coops=coop.reduce((a,v)=>a+v,0)/N2;
-    document.getElementById('s4-c').textContent=(coops*100).toFixed(1)+'%';
-    document.getElementById('s4-d').textContent=((1-coops)*100).toFixed(1)+'%';
-    document.getElementById('s4-t').textContent=gen;
+    const p=params(); const k=currentK();
+    const cf=countCoop(sim)/sim.N2;
+    document.getElementById('s4-c').textContent=(cf*100).toFixed(1)+'%';
+    document.getElementById('s4-d').textContent=((1-cf)*100).toFixed(1)+'%';
+    document.getElementById('s4-t').textContent=sim.gen;
     document.getElementById('v4-k').textContent=k;
-    updateCond('cl4','ct4',b/c,k,'b/c','k');
+    updateCond('cl4','ct4', p.b/p.c, k, 'b/c', 'k');
   }
-
   document.getElementById('r4-b').addEventListener('input',e=>{document.getElementById('v4-b').textContent=parseFloat(e.target.value).toFixed(1);updateUI();});
   document.getElementById('r4-c').addEventListener('input',e=>{document.getElementById('v4-c').textContent=parseFloat(e.target.value).toFixed(1);updateUI();});
-  document.getElementById('r4-k').addEventListener('change',e=>{document.getElementById('v4-k').textContent=e.target.value;updateUI();});
-
+  document.getElementById('r4-omega').addEventListener('input',e=>{document.getElementById('v4-omega').textContent=parseFloat(e.target.value).toFixed(2);updateUI();});
+  document.getElementById('r4-k').addEventListener('change',()=>{ buildNeighbors(sim,currentK()); updateUI(); });
   const loop=makeRunLoop({tick});
   document.getElementById('btn4-run').addEventListener('click',e=>loop.toggle(e.target));
   document.getElementById('btn4-step').addEventListener('click',()=>tick());
   document.getElementById('btn4-reset').addEventListener('click',()=>{loop.stop();document.getElementById('btn4-run').textContent='▶ Run';setup();});
   setup();
 })();
-
-
 // ══════════════════════════════════════════════════════════════
-// RULE 5: GROUP SELECTION
+// RULE 5: GROUP SELECTION — literal two-level model (SOM section 5):
+// variable-size groups, fitness-proportional reproduction across the
+// WHOLE population, splitting at capacity n with probability p.
+// This uses its own engine (not the lattice engine above) because group
+// sizes genuinely grow and shrink, which a fixed N×N grid cannot represent.
 // ══════════════════════════════════════════════════════════════
 (function(){
-  // m groups, each an array of agents {coop:0/1}
   let groups=[], gen=0;
   const chart=makeChart('ch5',[{label:'C',color:'#4a9eff'},{label:'D',color:'#e04444'}]);
 
@@ -927,6 +1086,9 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
       c:parseFloat(document.getElementById('r5-c').value),
       n:parseInt(document.getElementById('r5-n').value),
       m:parseInt(document.getElementById('r5-m').value),
+      p:parseFloat(document.getElementById('r5-p').value),
+      omega:parseFloat(document.getElementById('r5-omega').value),
+      mut:0.01,
     };
   }
 
@@ -934,113 +1096,95 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
     const {n,m}=params();
     gen=0; groups=[];
     for(let g=0;g<m;g++){
-      const size=Math.max(2,Math.floor(n/2)+randInt(Math.floor(n/2)));
+      const size=Math.max(2,Math.floor(n/2));
       const grp=[];
-      for(let i=0;i<size;i++) grp.push({coop:rand()<0.5?1:0});
+      for(let i=0;i<size;i++) grp.push(rand()<0.5?1:0);
       groups.push(grp);
     }
     chart.clear(); render(); updateUI();
   }
 
+  // in-group payoff for member idx, using the literal baseline matrix
+  // C-C=b-c, C-D=-c, D-C=b, D-D=0 summed over all OTHER group members
+  function payoffOf(grp,idx,b,c){
+    if(grp.length<=1) return 0;
+    let coops=0; for(const v of grp) coops+=v;
+    return grp[idx] ? (coops-1)*b - c*(grp.length-1) : coops*b;
+  }
+
   function tick(){
-    const {b,c,n,m}=params();
-    // within-group selection
-    groups.forEach(grp=>{
-      const coops=grp.filter(a=>a.coop).length;
-      grp.forEach(a=>{
-        // fitness
-        const fit = a.coop
-          ? (coops-1)*b - c*(grp.length-1)   // cooperator
-          : coops*b;                           // defector
-        a.fitness=fit;
-      });
-      // reproduce: tournament selection within group
-      const newGrp=[];
-      for(let i=0;i<grp.length;i++){
-        const a=grp[randInt(grp.length)];
-        const b2=grp[randInt(grp.length)];
-        newGrp.push({coop: (a.fitness>=b2.fitness ? a.coop : b2.coop)});
-        if(rand()<MUT) newGrp[newGrp.length-1].coop ^=1;
-      }
-      grp.splice(0,grp.length,...newGrp);
-      // growth: add one member by copying random member
-      if(grp.length<n){
-        const parent=grp[randInt(grp.length)];
-        grp.push({coop:parent.coop,fitness:0});
-      }
-    });
-
-    // group-level selection: groups with more cooperators are more likely to split
-    groups.forEach(grp=>{
-      const coopRate=grp.filter(a=>a.coop).length/grp.length;
-      const totalFit=grp.reduce((s,a)=>s+(a.fitness||0),0);
-      grp._groupFit = Math.max(0, totalFit) + coopRate*0.1; // small boost for cooperators
-    });
-
-    // find group to split (probabilistic, proportional to group fitness)
-    const totalGroupFit=groups.reduce((s,g)=>s+g._groupFit,0)||1;
-    let r=rand()*totalGroupFit;
-    let splitIdx=0;
-    for(let i=0;i<groups.length;i++){
-      r-=groups[i]._groupFit;
-      if(r<=0){splitIdx=i;break;}
+    const {b,c,n,m,p,omega,mut}=params();
+    if(groups.length!==m){
+      while(groups.length<m) groups.push([rand()<0.5?1:0]);
+      while(groups.length>m) groups.pop();
     }
-    // split the chosen group if large enough
-    if(groups[splitIdx].length>=4){
-      const grp=groups[splitIdx];
-      const half=Math.floor(grp.length/2);
-      const g1=grp.slice(0,half);
-      const g2=grp.slice(half);
-      groups.splice(splitIdx,1,g1,g2);
-      // remove smallest group to keep m constant
-      if(groups.length>m){
-        const minIdx=groups.reduce((mi,g,i)=>g.length<groups[mi].length?i:mi,0);
-        groups.splice(minIdx,1);
+    // 1. fitness-proportional selection of ONE individual from the ENTIRE population
+    let totalFit=0; const flat=[];
+    groups.forEach((grp,g)=>{
+      grp.forEach((_,idx)=>{
+        const P=payoffOf(grp,idx,b,c);
+        const fit=Math.max(0.0001, 1-omega+omega*P);
+        flat.push({g,idx,fit}); totalFit+=fit;
+      });
+    });
+    if(flat.length===0){ gen++; render(); updateUI(); return; }
+    let r=rand()*totalFit, chosen=flat[flat.length-1];
+    for(const item of flat){ r-=item.fit; if(r<=0){ chosen=item; break; } }
+
+    // 2. offspring added to the parent's own group
+    let childStrat=groups[chosen.g][chosen.idx];
+    if(rand()<mut) childStrat=childStrat?0:1;
+    groups[chosen.g].push(childStrat);
+
+    // 3. if that group just reached capacity n: split (prob p) or cull one member
+    if(groups[chosen.g].length>=n){
+      if(rand()<p){
+        const grp=groups[chosen.g];
+        const half=Math.floor(grp.length/2);
+        const g1=grp.slice(0,half), g2=grp.slice(half);
+        groups[chosen.g]=g1;
+        const others=groups.map((_,idx)=>idx).filter(idx=>idx!==chosen.g);
+        const victim=others[randInt(others.length)];
+        groups[victim]=g2;
+      } else {
+        const grp=groups[chosen.g];
+        grp.splice(randInt(grp.length),1);
       }
     }
 
     gen++;
     render(); updateUI();
     const all=[].concat(...groups);
-    const coopRate=all.filter(a=>a.coop).length/all.length;
+    const coopRate=all.length?all.filter(v=>v).length/all.length:0;
     chart.push([coopRate,1-coopRate]);
   }
 
   function render(){
-    const cv=document.getElementById('cv5');
-    const cx=cv.getContext('2d');
-    const W=cv.width, H=cv.height;
-    cx.clearRect(0,0,W,H);
-    cx.fillStyle='#07080d'; cx.fillRect(0,0,W,H);
-    const {m}=params();
-    const cols=Math.ceil(Math.sqrt(groups.length));
-    const rows=Math.ceil(groups.length/cols);
+    const cv=document.getElementById('cv5'); const cx=cv.getContext('2d');
+    const W=cv.width,H=cv.height;
+    cx.clearRect(0,0,W,H); cx.fillStyle='#07080d'; cx.fillRect(0,0,W,H);
+    const cols=Math.ceil(Math.sqrt(groups.length)), rows=Math.ceil(groups.length/cols);
     const cellW=Math.floor(W/cols), cellH=Math.floor(H/rows);
     groups.forEach((grp,gi)=>{
       const gx=(gi%cols)*cellW, gy=Math.floor(gi/cols)*cellH;
-      const coopRate=grp.filter(a=>a.coop).length/grp.length;
-      // background tint by cooperation level
-      const r=Math.round(D_COL[0]*(1-coopRate)+C_COL[0]*coopRate);
-      const g=Math.round(D_COL[1]*(1-coopRate)+C_COL[1]*coopRate);
-      const b=Math.round(D_COL[2]*(1-coopRate)+C_COL[2]*coopRate);
-      cx.fillStyle=`rgb(${r},${g},${b})`;
+      const coopRate=grp.length?grp.filter(v=>v).length/grp.length:0;
+      const cC=STRAT_COLORS[ALLC], dC=STRAT_COLORS[ALLD];
+      const rr=Math.round(dC[0]*(1-coopRate)+cC[0]*coopRate);
+      const gg=Math.round(dC[1]*(1-coopRate)+cC[1]*coopRate);
+      const bb=Math.round(dC[2]*(1-coopRate)+cC[2]*coopRate);
+      cx.fillStyle=`rgb(${rr},${gg},${bb})`;
       cx.fillRect(gx+1,gy+1,cellW-2,cellH-2);
-      // border
-      cx.strokeStyle='#07080d'; cx.lineWidth=2;
-      cx.strokeRect(gx,gy,cellW,cellH);
-      // show individual agents as dots
+      cx.strokeStyle='#07080d'; cx.lineWidth=2; cx.strokeRect(gx,gy,cellW,cellH);
       const maxDots=Math.min(grp.length,20);
-      const dotR=Math.min(cellW,cellH)/(Math.sqrt(maxDots)*2.5);
-      const dcols=Math.ceil(Math.sqrt(maxDots));
-      for(let di=0;di<Math.min(grp.length,maxDots);di++){
+      const dcols=Math.ceil(Math.sqrt(maxDots))||1;
+      const dotR=Math.min(cellW,cellH)/(Math.sqrt(maxDots||1)*2.5);
+      for(let di=0;di<maxDots;di++){
         const dx=gx+((di%dcols)+0.5)*(cellW/dcols);
         const dy=gy+(Math.floor(di/dcols)+0.5)*(cellH/Math.ceil(maxDots/dcols));
-        cx.beginPath();
-        cx.arc(dx,dy,Math.max(1.5,dotR),0,Math.PI*2);
-        cx.fillStyle=grp[di].coop?'rgba(74,158,255,0.9)':'rgba(224,68,68,0.9)';
+        cx.beginPath(); cx.arc(dx,dy,Math.max(1.5,dotR),0,Math.PI*2);
+        cx.fillStyle=grp[di]?'rgba(74,158,255,0.9)':'rgba(224,68,68,0.9)';
         cx.fill();
       }
-      // group size label
       cx.fillStyle='rgba(255,255,255,0.55)';
       cx.font=`${Math.max(8,Math.min(11,cellH/4))}px JetBrains Mono,monospace`;
       cx.textAlign='center';
@@ -1051,18 +1195,18 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
   function updateUI(){
     const {b,c,n,m}=params();
     const all=[].concat(...groups);
-    const coopRate=all.filter(a=>a.coop).length/Math.max(1,all.length);
+    const coopRate=all.length?all.filter(v=>v).length/all.length:0;
     document.getElementById('s5-c').textContent=(coopRate*100).toFixed(1)+'%';
     document.getElementById('s5-d').textContent=((1-coopRate)*100).toFixed(1)+'%';
     document.getElementById('s5-t').textContent=gen;
-    updateCond('cl5','ct5',b/c,1+n/m,'b/c','1+n/m');
+    updateCond('cl5','ct5', b/c, 1+n/m, 'b/c', '1+n/m');
   }
 
-  ['r5-b','r5-c','r5-n','r5-m'].forEach(id=>{
+  ['r5-b','r5-c','r5-n','r5-m','r5-p','r5-omega'].forEach(id=>{
     document.getElementById(id).addEventListener('input',e=>{
-      const map={'b':'v5-b','c':'v5-c','n':'v5-n','m':'v5-m'};
-      const key=id.split('-')[1];
-      document.getElementById(map[key]).textContent=parseInt(e.target.value);
+      const map={'r5-b':'v5-b','r5-c':'v5-c','r5-n':'v5-n','r5-m':'v5-m','r5-p':'v5-p','r5-omega':'v5-omega'};
+      const v=parseFloat(e.target.value);
+      document.getElementById(map[id]).textContent = (id==='r5-n'||id==='r5-m') ? String(parseInt(v)) : v.toFixed(2);
       updateUI();
     });
   });
@@ -1073,539 +1217,125 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
   document.getElementById('btn5-reset').addEventListener('click',()=>{loop.stop();document.getElementById('btn5-run').textContent='▶ Run';setup();});
   setup();
 })();
-</script>
 
-<!-- ══════════════════════════════════════════════════════════════
-     UNIFIED SIMULATION — HTML block
-══════════════════════════════════════════════════════════════ -->
-<style>
-.unified-header{
-  padding:32px 32px 20px;
-  border-top:3px solid var(--hi);
-  background:var(--surf);
-}
-.unified-header h2{
-  font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--hi);
-  letter-spacing:.05em;margin-bottom:6px;
-}
-.unified-header p{font-size:12px;color:var(--muted);line-height:1.8;max-width:900px;}
-.unified-header p strong{color:var(--text);}
 
-.unified-block{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  min-height:680px;
-  border-bottom:2px solid var(--border);
-}
-.u-vis{
-  background:#000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:20px;gap:14px;
-  border-right:1px solid var(--border);
-}
-.u-vis canvas{display:block;image-rendering:pixelated;border:1px solid var(--border);border-radius:3px;}
-
-.u-info{padding:24px 28px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;}
-
-.u-section-label{
-  font-family:var(--font-mono);font-size:9px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-  border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:4px;
-}
-
-/* mechanism toggles */
-.mech-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.mech-toggle{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 10px;border-radius:5px;
-  border:1px solid var(--border);background:var(--dim);
-  cursor:pointer;transition:border-color .15s;
-}
-.mech-toggle.active{border-color:var(--hi);}
-.mech-toggle input[type=checkbox]{accent-color:var(--hi);cursor:pointer;width:14px;height:14px;}
-.mech-toggle-label{font-family:var(--font-mono);font-size:10px;color:var(--text);}
-.mech-toggle-sub{font-size:9px;color:var(--muted);}
-
-/* color mode selector */
-.view-tabs{display:flex;gap:4px;flex-wrap:wrap;}
-.view-tab{
-  font-family:var(--font-mono);font-size:9px;font-weight:600;
-  padding:4px 10px;border-radius:4px;cursor:pointer;
-  border:1px solid var(--border);background:var(--dim);color:var(--muted);
-  transition:all .15s;
-}
-.view-tab.active{background:var(--hi);color:#000;border-color:var(--hi);}
-
-/* u stats */
-.u-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.u-stat{background:var(--dim);border:1px solid var(--border);border-radius:4px;padding:7px 8px;}
-.u-stat-val{font-family:var(--font-mono);font-size:14px;font-weight:700;line-height:1;}
-.u-stat-lbl{font-size:9px;color:var(--muted);margin-top:2px;}
-
-/* cond grid */
-.cond-grid{display:flex;flex-direction:column;gap:5px;}
-.u-cond{display:flex;align-items:center;gap:7px;padding:5px 9px;background:var(--dim);border:1px solid var(--border);border-radius:4px;}
-.u-cond-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.u-cond-dot.met{background:var(--green);box-shadow:0 0 5px var(--green);}
-.u-cond-dot.unmet{background:var(--D);}
-.u-cond-dot.off{background:var(--muted);}
-.u-cond-text{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
-.u-cond-text span{color:var(--text);}
-
-.legend-row{display:flex;gap:10px;flex-wrap:wrap;}
-.leg{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:var(--muted);}
-.leg-dot{width:9px;height:9px;border-radius:2px;}
-</style>
-
-<div class="unified-header" id="r-unified">
-  <h2>⬡ UNIFIED SIMULATION — All Five Rules Active</h2>
-  <p>
-    Every agent simultaneously embodies all five mechanisms.
-    <strong>Kin selection</strong>: agents belong to relatedness clusters — fitness contributions from kin are upweighted by r.
-    <strong>Direct reciprocity</strong>: each agent carries a strategy (AllC / AllD / TFT / GTFT) and plays iterated games with neighbors, with continuation probability w.
-    <strong>Indirect reciprocity</strong>: each agent has a public reputation that rises when it cooperates and falls when it defects; agents with low reputation are less likely to receive help.
-    <strong>Network reciprocity</strong>: agents are fixed on a spatial lattice and only interact with local neighbors — cooperation clusters can form and resist invasion.
-    <strong>Group selection</strong>: the grid is partitioned into groups; high-cooperation groups periodically expand and replace low-cooperation groups.
-    Toggle each mechanism on/off and tune its strength to observe how they interact.
-  </p>
-</div>
-
-<div class="unified-block">
-  <!-- VIS -->
-  <div class="u-vis">
-    <canvas id="ucv" width="100" height="100" style="width:380px;height:380px"></canvas>
-    <canvas id="uch" width="380" height="130" style="width:380px;height:130px;background:var(--surf);border:1px solid var(--border);border-radius:4px;"></canvas>
-    <!-- view mode -->
-    <div style="display:flex;flex-direction:column;gap:6px;width:380px;">
-      <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;">Color view</div>
-      <div class="view-tabs" id="u-view-tabs">
-        <div class="view-tab active" data-view="strategy">Strategy</div>
-        <div class="view-tab" data-view="reputation">Reputation</div>
-        <div class="view-tab" data-view="group">Group</div>
-        <div class="view-tab" data-view="fitness">Fitness</div>
-      </div>
-      <div class="legend-row" id="u-legend"></div>
-    </div>
-  </div>
-
-  <!-- INFO -->
-  <div class="u-info">
-
-    <!-- Mechanism toggles -->
-    <div>
-      <div class="u-section-label">Active Mechanisms</div>
-      <div class="mech-grid">
-        <label class="mech-toggle active" id="mt-kin">
-          <input type="checkbox" id="u-kin" checked/>
-          <div><div class="mech-toggle-label">1. Kin Selection</div><div class="mech-toggle-sub">rb &gt; c</div></div>
-        </label>
-        <label class="mech-toggle active" id="mt-dr">
-          <input type="checkbox" id="u-dr" checked/>
-          <div><div class="mech-toggle-label">2. Direct Reciprocity</div><div class="mech-toggle-sub">w &gt; c/b</div></div>
-        </label>
-        <label class="mech-toggle active" id="mt-ir">
-          <input type="checkbox" id="u-ir" checked/>
-          <div><div class="mech-toggle-label">3. Indirect Reciprocity</div><div class="mech-toggle-sub">q &gt; c/b</div></div>
-        </label>
-        <label class="mech-toggle active" id="mt-nr">
-          <input type="checkbox" id="u-nr" checked/>
-          <div><div class="mech-toggle-label">4. Network Reciprocity</div><div class="mech-toggle-sub">b/c &gt; k</div></div>
-        </label>
-        <label class="mech-toggle active" id="mt-gs">
-          <input type="checkbox" id="u-gs" checked/>
-          <div><div class="mech-toggle-label">5. Group Selection</div><div class="mech-toggle-sub">b/c &gt; 1+n/m</div></div>
-        </label>
-      </div>
-    </div>
-
-    <!-- Shared params -->
-    <div>
-      <div class="u-section-label">Shared Parameters</div>
-      <div class="sliders">
-        <div class="sl-row"><span class="sl-label">Benefit (b)</span><input type="range" id="u-b" min="1" max="15" step="0.5" value="5"/><span class="sl-val" id="uv-b">5.0</span></div>
-        <div class="sl-row"><span class="sl-label">Cost (c)</span><input type="range" id="u-c" min="0.1" max="5" step="0.1" value="1"/><span class="sl-val" id="uv-c">1.0</span></div>
-        <div class="sl-row"><span class="sl-label">Init. coop. rate</span><input type="range" id="u-init" min="0.05" max="0.95" step="0.05" value="0.5"/><span class="sl-val" id="uv-init">50%</span></div>
-        <div class="sl-row"><span class="sl-label">Mutation rate</span><input type="range" id="u-mut" min="0" max="0.1" step="0.005" value="0.01"/><span class="sl-val" id="uv-mut">0.010</span></div>
-        <div class="sl-row"><span class="sl-label">Speed</span><input type="range" id="u-speed" min="1" max="20" step="1" value="8"/><span class="sl-val" id="uv-speed">8</span></div>
-      </div>
-    </div>
-
-    <!-- Mechanism-specific params -->
-    <div>
-      <div class="u-section-label">Mechanism Strengths</div>
-      <div class="sliders">
-        <div class="sl-row"><span class="sl-label">Relatedness (r)</span><input type="range" id="u-r" min="0" max="1" step="0.05" value="0.3"/><span class="sl-val" id="uv-r">0.30</span></div>
-        <div class="sl-row"><span class="sl-label">Continuation (w)</span><input type="range" id="u-w" min="0.01" max="0.99" step="0.01" value="0.5"/><span class="sl-val" id="uv-w">0.50</span></div>
-        <div class="sl-row"><span class="sl-label">Rep. knowledge (q)</span><input type="range" id="u-q" min="0.01" max="1" step="0.01" value="0.4"/><span class="sl-val" id="uv-q">0.40</span></div>
-        <div class="sl-row"><span class="sl-label">Groups (m)</span><input type="range" id="u-m" min="4" max="25" step="1" value="10"/><span class="sl-val" id="uv-m">10</span></div>
-      </div>
-    </div>
-
-    <!-- Conditions -->
-    <div>
-      <div class="u-section-label">Condition Status</div>
-      <div class="cond-grid">
-        <div class="u-cond"><div class="u-cond-dot" id="ud1"></div><span class="u-cond-text"><span>Kin:</span> r·b vs c &nbsp;<span id="ut1"></span></span></div>
-        <div class="u-cond"><div class="u-cond-dot" id="ud2"></div><span class="u-cond-text"><span>Direct:</span> w vs c/b &nbsp;<span id="ut2"></span></span></div>
-        <div class="u-cond"><div class="u-cond-dot" id="ud3"></div><span class="u-cond-text"><span>Indirect:</span> q vs c/b &nbsp;<span id="ut3"></span></span></div>
-        <div class="u-cond"><div class="u-cond-dot" id="ud4"></div><span class="u-cond-text"><span>Network:</span> b/c vs k=8 &nbsp;<span id="ut4"></span></span></div>
-        <div class="u-cond"><div class="u-cond-dot" id="ud5"></div><span class="u-cond-text"><span>Group:</span> b/c vs 1+n/m &nbsp;<span id="ut5"></span></span></div>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div>
-      <div class="u-section-label">Population</div>
-      <div class="u-stats-grid">
-        <div class="u-stat"><div class="u-stat-val" style="color:var(--C)" id="us-allc">–</div><div class="u-stat-lbl">AllC</div></div>
-        <div class="u-stat"><div class="u-stat-val" style="color:#80ee80" id="us-tft">–</div><div class="u-stat-lbl">TFT/GTFT</div></div>
-        <div class="u-stat"><div class="u-stat-val" style="color:var(--D)" id="us-alld">–</div><div class="u-stat-lbl">AllD</div></div>
-        <div class="u-stat"><div class="u-stat-val" style="color:var(--hi)" id="us-gen">0</div><div class="u-stat-lbl">Generation</div></div>
-      </div>
-      <div style="margin-top:8px;" class="u-stats-grid">
-        <div class="u-stat"><div class="u-stat-val" style="color:var(--green)" id="us-rep">–</div><div class="u-stat-lbl">Avg Reputation</div></div>
-        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-coop">–</div><div class="u-stat-lbl">Coop. Rate</div></div>
-        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-fit">–</div><div class="u-stat-lbl">Avg Fitness</div></div>
-        <div class="u-stat"><div class="u-stat-val" style="color:#aaa" id="us-grp">–</div><div class="u-stat-lbl">Avg Grp Coop</div></div>
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-run" id="ubtn-run">▶ Run</button>
-      <button class="btn-step" id="ubtn-step">Step</button>
-      <button class="btn-reset" id="ubtn-reset">↺ Reset</button>
-    </div>
-
-  </div>
-</div>
-
-<script>
 // ══════════════════════════════════════════════════════════════
-// UNIFIED SIMULATION
+// UNIFIED SIMULATION — reuses the exact same core engine (createSim,
+// buildNeighbors, buildGroups, step, applyGroupSelection) as rules 1-4.
+// Toggling exactly one mechanism on reduces this to that rule's standalone
+// matrix; toggling several composes them as documented in the formula box.
 // ══════════════════════════════════════════════════════════════
 (function(){
-  const N = 100, N2 = N*N;
-  const K = 8; // Moore neighborhood
-
-  // Strategy constants
-  const ALLC=0, TFT=1, GTFT=2, ALLD=3;
-  const STRAT_COLORS = {
-    0: [74,158,255],    // AllC — blue
-    1: [80,220,130],    // TFT  — green
-    2: [180,140,255],   // GTFT — purple
-    3: [224,68,68],     // AllD — red
-  };
-
-  // Per-agent arrays
-  let strategy  = new Uint8Array(N2);   // 0–3
-  let rep       = new Float32Array(N2); // 0–1 reputation
-  let kinGroup  = new Uint8Array(N2);   // kin cluster id (0–24)
-  let simGroup  = new Uint8Array(N2);   // group selection group id
-  let fitness   = new Float32Array(N2);
-  let lastMoveToNeighbor = new Uint8Array(N2); // simplified: last cooperation decision
-  let gen = 0;
-
-  let viewMode = 'strategy';
-
-  // Precomputed neighbor indices
-  let nbCache = [];
-  function buildNbCache(){
-    nbCache=[];
-    for(let r=0;r<N;r++) for(let c=0;c<N;c++){
-      const nb=[];
-      for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
-        if(!dr&&!dc) continue;
-        nb.push(((r+dr+N)%N)*N+((c+dc+N)%N));
-      }
-      nbCache.push(nb);
-    }
-  }
-
-  // Group partition: divide grid into m roughly equal rectangular groups
-  function buildGroups(m){
-    const cols=Math.ceil(Math.sqrt(m));
-    const rows=Math.ceil(m/cols);
-    const cw=Math.ceil(N/cols), ch=Math.ceil(N/rows);
-    for(let i=0;i<N2;i++){
-      const r=Math.floor(i/N), c=i%N;
-      const gr=Math.floor(r/ch), gc=Math.floor(c/cw);
-      simGroup[i]=Math.min(gr*cols+gc, m-1);
-    }
-  }
-
-  // Kin clusters: assign patches to one of 25 kin clusters (5x5 grid of clusters)
-  function buildKinClusters(){
-    const KW=Math.ceil(N/5);
-    for(let i=0;i<N2;i++){
-      const r=Math.floor(i/N), c=i%N;
-      kinGroup[i]=Math.floor(r/KW)*5+Math.floor(c/KW);
-    }
-  }
+  const sim=createSim(100);
+  const ALLOWED=[ALLC,TFT,GTFT,ALLD];
+  let viewMode='strategy';
 
   function params(){
     return {
-      b: parseFloat(document.getElementById('u-b').value),
-      c: parseFloat(document.getElementById('u-c').value),
-      r: parseFloat(document.getElementById('u-r').value),
-      w: parseFloat(document.getElementById('u-w').value),
-      q: parseFloat(document.getElementById('u-q').value),
-      m: parseInt(document.getElementById('u-m').value),
-      mut: parseFloat(document.getElementById('u-mut').value),
-      init: parseFloat(document.getElementById('u-init').value),
-      useKin: document.getElementById('u-kin').checked,
-      useDR:  document.getElementById('u-dr').checked,
-      useIR:  document.getElementById('u-ir').checked,
-      useNR:  document.getElementById('u-nr').checked,
-      useGS:  document.getElementById('u-gs').checked,
+      b:parseFloat(document.getElementById('u-b').value),
+      c:parseFloat(document.getElementById('u-c').value),
+      r:parseFloat(document.getElementById('u-r').value),
+      w:parseFloat(document.getElementById('u-w').value),
+      q:parseFloat(document.getElementById('u-q').value),
+      m:parseInt(document.getElementById('u-m').value),
+      omega:parseFloat(document.getElementById('u-omega').value),
+      mut:parseFloat(document.getElementById('u-mut').value),
+      init:parseFloat(document.getElementById('u-init').value),
+      allowed:ALLOWED,
+      active:{
+        kin:document.getElementById('u-kin').checked,
+        dr:document.getElementById('u-dr').checked,
+        ir:document.getElementById('u-ir').checked,
+        nr:document.getElementById('u-nr').checked,
+        gs:document.getElementById('u-gs').checked,
+      },
     };
   }
 
   function setup(){
-    gen=0;
-    buildNbCache();
+    sim.gen=0;
     const p=params();
-    buildGroups(p.m);
-    buildKinClusters();
-    for(let i=0;i<N2;i++){
-      // random initial strategy
+    buildNeighbors(sim,8);
+    buildGroups(sim,p.m);
+    for(let i=0;i<sim.N2;i++){
       const r2=rand();
-      if(r2<p.init*0.5)      strategy[i]=ALLC;
-      else if(r2<p.init)     strategy[i]=rand()<0.5?TFT:GTFT;
-      else                   strategy[i]=ALLD;
-      rep[i]=rand();
-      lastMoveToNeighbor[i]=1;
+      if(r2<p.init*0.5) sim.strategy[i]=ALLC;
+      else if(r2<p.init) sim.strategy[i]=rand()<0.5?TFT:GTFT;
+      else sim.strategy[i]=ALLD;
+      sim.rep[i]=rand();
     }
     uChart.clear(); render(); updateUI();
   }
 
-  // decide if agent i cooperates with agent j (given parameters)
-  function decideCooperate(i, j, p){
-    const s=strategy[i];
-    if(s===ALLC) return 1;
-    if(s===ALLD) return 0;
-    if(s===TFT)  return lastMoveToNeighbor[j]; // mirror j's last move
-    if(s===GTFT) {
-      if(lastMoveToNeighbor[j]) return 1;
-      // forgive with probability min(1-c/b, q)
-      return rand() < Math.max(0, 1 - p.c/p.b) ? 1 : 0;
-    }
-    return 1;
-  }
-
   function tick(){
     const p=params();
-    const newStrat=strategy.slice();
-    const newRep=rep.slice();
-    const newLast=lastMoveToNeighbor.slice();
-
-    // ── STEP 1: compute payoffs ───────────────────────────────
-    fitness.fill(0);
-    for(let i=0;i<N2;i++){
-      const nb=nbCache[i];
-      for(const j of nb){
-        // how many rounds? w determines expected length
-        const rounds = p.useDR ? Math.max(1, Math.round(1/(1-Math.min(p.w,0.99)))) : 1;
-        let myPay=0;
-        let lastJ=lastMoveToNeighbor[j], lastI=lastMoveToNeighbor[i];
-        for(let rnd=0;rnd<Math.min(rounds,8);rnd++){
-          const miCoop = p.useDR ? decideCooperate(i,j,p) : (strategy[i]!==ALLD?1:0);
-          const mjCoop = p.useDR ? decideCooperate(j,i,p) : (strategy[j]!==ALLD?1:0);
-
-          // indirect reciprocity: reputation gates cooperation
-          let iActualCoop = miCoop;
-          let jActualCoop = mjCoop;
-          if(p.useIR){
-            if(rand()<p.q && rep[j]<0.3) iActualCoop=0;
-            if(rand()<p.q && rep[i]<0.3) jActualCoop=0;
-          }
-
-          if(iActualCoop){ myPay -= p.c; }
-          if(jActualCoop){ myPay += p.b; }
-
-          // reputation update
-          if(p.useIR){
-            if(iActualCoop) newRep[i]=Math.min(1, rep[i]+0.08);
-            else            newRep[i]=Math.max(0, rep[i]-0.04);
-          }
-
-          newLast[i]=iActualCoop;
-          lastJ=mjCoop; lastI=iActualCoop;
-          if(rnd<rounds-1 && rand()>p.w) break;
-        }
-
-        // kin selection: weight payoff by relatedness if same kin group
-        let kinBonus=1;
-        if(p.useKin && kinGroup[i]===kinGroup[j]) kinBonus = 1 + p.r;
-        fitness[i] += myPay * kinBonus;
-      }
-    }
-
-    // ── STEP 2: strategy update (network reciprocity = spatial imitation) ──
-    for(let i=0;i<N2;i++){
-      const nb=nbCache[i];
-      let bestFit=fitness[i], bestStrat=strategy[i];
-
-      if(p.useNR){
-        // imitate best neighbor (spatial)
-        for(const j of nb){
-          let effectiveFit=fitness[j];
-          // kin bonus for adoption
-          if(p.useKin && kinGroup[i]===kinGroup[j]) effectiveFit*=(1+p.r*0.5);
-          if(effectiveFit>bestFit){bestFit=effectiveFit;bestStrat=strategy[j];}
-        }
-      } else {
-        // well-mixed: random comparison within neighborhood
-        const j=nb[randInt(nb.length)];
-        if(fitness[j]>fitness[i]) bestStrat=strategy[j];
-      }
-      newStrat[i]=bestStrat;
-      if(rand()<p.mut) newStrat[i]=randInt(4);
-    }
-
-    // ── STEP 3: group selection ───────────────────────────────
-    if(p.useGS){
-      buildGroups(p.m);
-      // compute group cooperation rates
-      const groupCoop = new Float32Array(p.m);
-      const groupSize = new Float32Array(p.m);
-      for(let i=0;i<N2;i++){
-        const g=simGroup[i];
-        groupCoop[g]+=(newStrat[i]!==ALLD?1:0);
-        groupSize[g]++;
-      }
-      // find best and worst group
-      let bestG=0, worstG=0;
-      let bestRate=-1, worstRate=2;
-      for(let g=0;g<p.m;g++){
-        const rate=groupSize[g]>0?groupCoop[g]/groupSize[g]:0;
-        if(rate>bestRate){bestRate=rate;bestG=g;}
-        if(rate<worstRate){worstRate=rate;worstG=g;}
-      }
-      // with small probability, best group "invades" one border cell of worst group
-      if(rand()<0.05 && bestG!==worstG){
-        // find a cell in worst group and replace its strategy with a random cell from best group
-        const worstCells=[]; const bestCells=[];
-        for(let i=0;i<N2;i++){
-          if(simGroup[i]===worstG) worstCells.push(i);
-          if(simGroup[i]===bestG)  bestCells.push(i);
-        }
-        if(worstCells.length && bestCells.length){
-          const target=worstCells[randInt(worstCells.length)];
-          const donor =bestCells[randInt(bestCells.length)];
-          newStrat[target]=newStrat[donor];
-        }
-      }
-    }
-
-    strategy=newStrat; rep=newRep; lastMoveToNeighbor=newLast;
-    gen++;
+    if(p.m!==sim.m) buildGroups(sim,p.m);
+    step(sim,p);
     render(); updateUI();
-
-    // chart
-    const allc=strategy.filter(s=>s===ALLC).length/N2;
-    const tft=strategy.filter(s=>s===TFT||s===GTFT).length/N2;
-    const alld=strategy.filter(s=>s===ALLD).length/N2;
-    uChart.push([allc+tft, alld, allc]);
+    const n=sim.N2; let allc=0,tft=0,alld=0;
+    for(let i=0;i<n;i++){ const s=sim.strategy[i]; if(s===ALLC)allc++; else if(s===TFT||s===GTFT)tft++; else alld++; }
+    uChart.push([(allc+tft)/n, alld/n, allc/n]);
   }
 
-  // ── RENDER ─────────────────────────────────────────────────
   function render(){
-    const cv=document.getElementById('ucv');
-    const cx=cv.getContext('2d');
-    const img=cx.createImageData(N,N); const px=img.data;
-
-    // precompute group coop rates for group view
+    const cv=document.getElementById('ucv'); const cx=cv.getContext('2d');
+    const N=sim.N; const img=cx.createImageData(N,N); const px=img.data;
     let groupCoopRate=null;
     if(viewMode==='group'){
-      const m=params().m;
-      const gc=new Float32Array(m), gs=new Float32Array(m);
-      for(let i=0;i<N2;i++){const g=simGroup[i];gc[g]+=(strategy[i]!==ALLD?1:0);gs[g]++;}
+      const m=sim.m; const gc=new Float32Array(m), gs=new Float32Array(m);
+      for(let i=0;i<sim.N2;i++){ const g=sim.group[i]; gc[g]+=(sim.strategy[i]!==ALLD?1:0); gs[g]++; }
       groupCoopRate=new Float32Array(m);
-      for(let g=0;g<m;g++) groupCoopRate[g]=gs[g]>0?gc[g]/gs[g]:0;
+      for(let g=0;g<m;g++) groupCoopRate[g]=gs[g]?gc[g]/gs[g]:0;
     }
-
-    // precompute fitness range for fitness view
     let fitMin=Infinity,fitMax=-Infinity;
     if(viewMode==='fitness'){
-      for(let i=0;i<N2;i++){if(fitness[i]<fitMin)fitMin=fitness[i];if(fitness[i]>fitMax)fitMax=fitness[i];}
+      for(let i=0;i<sim.N2;i++){ if(sim.fitness[i]<fitMin)fitMin=sim.fitness[i]; if(sim.fitness[i]>fitMax)fitMax=sim.fitness[i]; }
     }
-
-    for(let i=0;i<N2;i++){
+    for(let i=0;i<sim.N2;i++){
       let col;
       switch(viewMode){
-        case 'strategy':
-          col=STRAT_COLORS[strategy[i]]; break;
-        case 'reputation': {
-          const v=rep[i];
-          col=[Math.round(v*74+(1-v)*224), Math.round(v*158+(1-v)*68), Math.round(v*255+(1-v)*68)];
-          break;
-        }
-        case 'group': {
-          const g=simGroup[i];
-          const cr=groupCoopRate[g];
-          // hue cycles through groups, saturation by coop rate
-          const hue=(g*37)%360;
-          const h=hue/360,s=0.5+cr*0.5,l=0.25+cr*0.25;
-          col=hslToRgb(h,s,l); break;
-        }
-        case 'fitness': {
-          const range=fitMax-fitMin||1;
-          const v=(fitness[i]-fitMin)/range;
-          col=[Math.round(v*255), Math.round(v*200), Math.round((1-v)*180)];
-          break;
-        }
+        case 'strategy': col=STRAT_COLORS[sim.strategy[i]]; break;
+        case 'reputation': { const v=sim.rep[i]; col=[Math.round(v*74+(1-v)*224), Math.round(v*158+(1-v)*68), Math.round(v*255+(1-v)*68)]; break; }
+        case 'group': { const g=sim.group[i]; const cr=groupCoopRate[g]; const hue=(g*37)%360; col=hslToRgb(hue/360,0.5+cr*0.5,0.25+cr*0.25); break; }
+        case 'fitness': { const range=fitMax-fitMin||1; const v=(sim.fitness[i]-fitMin)/range; col=[Math.round(v*255),Math.round(v*200),Math.round((1-v)*180)]; break; }
       }
       const p2=i*4; px[p2]=col[0];px[p2+1]=col[1];px[p2+2]=col[2];px[p2+3]=255;
     }
     cx.putImageData(img,0,0);
   }
 
-  function hslToRgb(h,s,l){
-    let r,g,b;
-    if(!s){r=g=b=l;}
-    else{
-      const hue2rgb=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
-      const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;
-      r=hue2rgb(p,q,h+1/3);g=hue2rgb(p,q,h);b=hue2rgb(p,q,h-1/3);
-    }
-    return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
-  }
-
-  // ── UPDATE UI ──────────────────────────────────────────────
   function updateUI(){
     const p=params();
-    const allc=strategy.filter(s=>s===ALLC).length;
-    const tftN=strategy.filter(s=>s===TFT||s===GTFT).length;
-    const alld=strategy.filter(s=>s===ALLD).length;
-    const coopRate=(allc+tftN)/N2;
-    const avgRep=rep.reduce((a,v)=>a+v,0)/N2;
-    const avgFit=fitness.reduce((a,v)=>a+v,0)/N2;
+    const n2=sim.N2;
+    let allc=0,tft=0,alld=0,repSum=0,fitSum=0;
+    for(let i=0;i<n2;i++){
+      const s=sim.strategy[i];
+      if(s===ALLC)allc++; else if(s===TFT||s===GTFT)tft++; else alld++;
+      repSum+=sim.rep[i]; fitSum+=sim.fitness[i];
+    }
+    document.getElementById('us-allc').textContent=(allc/n2*100).toFixed(1)+'%';
+    document.getElementById('us-tft').textContent=(tft/n2*100).toFixed(1)+'%';
+    document.getElementById('us-alld').textContent=(alld/n2*100).toFixed(1)+'%';
+    document.getElementById('us-gen').textContent=sim.gen;
+    document.getElementById('us-rep').textContent=(repSum/n2).toFixed(2);
+    document.getElementById('us-coop').textContent=((allc+tft)/n2*100).toFixed(1)+'%';
+    document.getElementById('us-fit').textContent=(fitSum/n2).toFixed(1);
 
-    document.getElementById('us-allc').textContent=(allc/N2*100).toFixed(1)+'%';
-    document.getElementById('us-tft').textContent=(tftN/N2*100).toFixed(1)+'%';
-    document.getElementById('us-alld').textContent=(alld/N2*100).toFixed(1)+'%';
-    document.getElementById('us-gen').textContent=gen;
-    document.getElementById('us-rep').textContent=avgRep.toFixed(2);
-    document.getElementById('us-coop').textContent=(coopRate*100).toFixed(1)+'%';
-    document.getElementById('us-fit').textContent=avgFit.toFixed(1);
+    const gc=new Float32Array(sim.m), gcount=new Float32Array(sim.m);
+    for(let i=0;i<n2;i++){ gc[sim.group[i]]+=(sim.strategy[i]!==ALLD?1:0); gcount[sim.group[i]]++; }
+    let gcAvg=0; for(let g=0;g<sim.m;g++) gcAvg+=gcount[g]?gc[g]/gcount[g]:0;
+    document.getElementById('us-grp').textContent=(gcAvg/sim.m*100).toFixed(1)+'%';
 
-    // group avg coop
-    const gc=new Float32Array(p.m), gs=new Float32Array(p.m);
-    for(let i=0;i<N2;i++){const g=simGroup[i];gc[g]+=(strategy[i]!==ALLD?1:0);gs[g]++;}
-    let gcAvg=0; for(let g=0;g<p.m;g++) gcAvg+=gs[g]>0?gc[g]/gs[g]:0;
-    document.getElementById('us-grp').textContent=(gcAvg/p.m*100).toFixed(1)+'%';
-
-    // condition indicators
+    const realN = Math.round(n2/p.m); // actual group size given the shared lattice (fixes the old hardcoded-n bug)
     const conds=[
-      {id:'ud1',tid:'ut1', on:p.useKin, lhs:p.r*p.b, rhs:p.c,   lhsL:'r·b', rhsL:'c'},
-      {id:'ud2',tid:'ut2', on:p.useDR,  lhs:p.w,     rhs:p.c/p.b, lhsL:'w',  rhsL:'c/b'},
-      {id:'ud3',tid:'ut3', on:p.useIR,  lhs:p.q,     rhs:p.c/p.b, lhsL:'q',  rhsL:'c/b'},
-      {id:'ud4',tid:'ut4', on:p.useNR,  lhs:p.b/p.c, rhs:K,       lhsL:'b/c',rhsL:'k'},
-      {id:'ud5',tid:'ut5', on:p.useGS,  lhs:p.b/p.c, rhs:1+10/p.m,lhsL:'b/c',rhsL:'1+n/m'},
+      {id:'ud1',tid:'ut1', on:p.active.kin, lhs:p.r, rhs:p.c/p.b, lhsL:'r', rhsL:'c/b'},
+      {id:'ud2',tid:'ut2', on:p.active.dr,  lhs:p.w, rhs:p.c/p.b, lhsL:'w', rhsL:'c/b'},
+      {id:'ud3',tid:'ut3', on:p.active.ir,  lhs:p.q, rhs:p.c/p.b, lhsL:'q', rhsL:'c/b'},
+      {id:'ud4',tid:'ut4', on:p.active.nr,  lhs:p.b/p.c, rhs:8, lhsL:'b/c', rhsL:'k'},
+      {id:'ud5',tid:'ut5', on:p.active.gs,  lhs:p.b/p.c, rhs:1+realN/p.m, lhsL:'b/c', rhsL:'1+n/m'},
     ];
     conds.forEach(({id,tid,on,lhs,rhs,lhsL,rhsL})=>{
-      const dot=document.getElementById(id);
-      const txt=document.getElementById(tid);
+      const dot=document.getElementById(id), txt=document.getElementById(tid);
       if(!on){ dot.className='u-cond-dot off'; txt.textContent='(off)'; return; }
       const met=lhs>rhs;
       dot.className='u-cond-dot '+(met?'met':'unmet');
@@ -1613,63 +1343,42 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
     });
   }
 
-  // ── CHART ──────────────────────────────────────────────────
-  const uChart = makeChart('uch',[
-    {label:'Coop (AllC+TFT)',color:'#4a9eff'},
+  const uChart=makeChart('uch',[
+    {label:'Coop (AllC+TFT+GTFT)',color:'#4a9eff'},
     {label:'AllD',color:'#e04444'},
     {label:'AllC only',color:'#80ee80'},
   ]);
 
-  // ── LEGEND ─────────────────────────────────────────────────
   function updateLegend(){
-    const leg=document.getElementById('u-legend');
-    leg.innerHTML='';
+    const leg=document.getElementById('u-legend'); leg.innerHTML='';
     const views={
-      strategy:[
-        {color:'#4a9eff',label:'AllC'},
-        {color:'#80ee80',label:'TFT'},
-        {color:'#b48cff',label:'GTFT'},
-        {color:'#e04444',label:'AllD'},
-      ],
-      reputation:[
-        {color:'#4a9eff',label:'High rep (coop)'},
-        {color:'#e04444',label:'Low rep (defect)'},
-      ],
-      group:[{color:'#aaa',label:'Each color = one group; brightness = coop rate'}],
-      fitness:[
-        {color:'#ffcc00',label:'High fitness'},
-        {color:'#2d0000',label:'Low fitness'},
-      ],
+      strategy:[{color:'#4a9eff',label:'AllC'},{color:'#80ee80',label:'TFT'},{color:'#b48cff',label:'GTFT'},{color:'#e04444',label:'AllD'}],
+      reputation:[{color:'#4a9eff',label:'High rep (coop)'},{color:'#e04444',label:'Low rep (defect)'}],
+      group:[{color:'#aaa',label:'Each hue = one group; brightness = coop rate'}],
+      fitness:[{color:'#ffcc00',label:'High fitness'},{color:'#2d0000',label:'Low fitness'}],
     };
     (views[viewMode]||[]).forEach(({color,label})=>{
-      const d=document.createElement('div');
-      d.className='leg';
+      const d=document.createElement('div'); d.className='leg';
       d.innerHTML=`<div class="leg-dot" style="background:${color}"></div>${label}`;
       leg.appendChild(d);
     });
   }
 
-  // ── SLIDER WIRING ──────────────────────────────────────────
-  const slMap={
-    'u-b':'uv-b','u-c':'uv-c','u-r':'uv-r','u-w':'uv-w',
-    'u-q':'uv-q','u-m':'uv-m','u-speed':'uv-speed',
-    'u-mut':'uv-mut','u-init':'uv-init',
-  };
+  const slMap={'u-b':'uv-b','u-c':'uv-c','u-r':'uv-r','u-w':'uv-w','u-q':'uv-q','u-m':'uv-m','u-speed':'uv-speed','u-mut':'uv-mut','u-init':'uv-init','u-omega':'uv-omega'};
   Object.entries(slMap).forEach(([sid,vid])=>{
     const el=document.getElementById(sid);
     el.addEventListener('input',()=>{
-      let v=parseFloat(el.value);
-      let txt;
+      let v=parseFloat(el.value); let txt;
       if(sid==='u-init') txt=Math.round(v*100)+'%';
       else if(sid==='u-mut') txt=v.toFixed(3);
       else if(Number.isInteger(v)) txt=String(v);
       else txt=v.toFixed(2);
       document.getElementById(vid).textContent=txt;
+      if(sid==='u-m') buildGroups(sim,parseInt(el.value));
       updateUI();
     });
   });
 
-  // mechanism checkboxes
   ['u-kin','u-dr','u-ir','u-nr','u-gs'].forEach((id,i)=>{
     const mtId=['mt-kin','mt-dr','mt-ir','mt-nr','mt-gs'][i];
     document.getElementById(id).addEventListener('change',e=>{
@@ -1678,18 +1387,15 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
     });
   });
 
-  // view tabs
   document.querySelectorAll('.view-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
       document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
       tab.classList.add('active');
       viewMode=tab.dataset.view;
-      updateLegend();
-      render();
+      updateLegend(); render();
     });
   });
 
-  // run loop with speed control
   let running=false, rafId=null, lastT=null, accT=0;
   function loop(ts){
     if(!running)return;
@@ -1697,19 +1403,11 @@ function pct(arr, val){ return (arr.filter(x=>x===val).length/arr.length*100).to
     accT+=ts-lastT; lastT=ts;
     const speed=parseInt(document.getElementById('u-speed').value);
     const msPerTick=Math.max(16,200/speed);
-    while(accT>=msPerTick){tick();accT-=msPerTick;}
+    while(accT>=msPerTick){ tick(); accT-=msPerTick; }
     rafId=requestAnimationFrame(loop);
   }
-  function stopU(){
-    running=false;if(rafId){cancelAnimationFrame(rafId);rafId=null;}
-    lastT=null;accT=0;
-    document.getElementById('ubtn-run').textContent='▶ Run';
-  }
-  function startU(){
-    running=true;
-    document.getElementById('ubtn-run').textContent='⏸ Pause';
-    rafId=requestAnimationFrame(loop);
-  }
+  function stopU(){ running=false; if(rafId){cancelAnimationFrame(rafId);rafId=null;} lastT=null;accT=0; document.getElementById('ubtn-run').textContent='▶ Run'; }
+  function startU(){ running=true; document.getElementById('ubtn-run').textContent='⏸ Pause'; rafId=requestAnimationFrame(loop); }
 
   document.getElementById('ubtn-run').addEventListener('click',()=>{running?stopU():startU();});
   document.getElementById('ubtn-step').addEventListener('click',()=>tick());
